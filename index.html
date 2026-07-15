@@ -49,12 +49,11 @@
         .btn-principal { background-color: var(--azul-primario); color: var(--blanco); padding: 12px 35px; text-decoration: none; border-radius: 5px; font-size: 1.1rem; font-weight: 600; transition: background 0.3s ease; display: inline-block; }
         .btn-principal:hover { background-color: #1557c0; }
 
-        /* --- SECCIÓN NOSOTROS (ACTUALIZADA) --- */
-        /* Párrafo introductorio centrado */
+        /* --- SECCIÓN NOSOTROS --- */
         .nosotros-intro {
             text-align: center;
             max-width: 800px;
-            margin: 0 auto 60px auto; /* Espacio abajo antes de las columnas */
+            margin: 0 auto 60px auto; 
             color: var(--texto-claro);
             font-size: 1.15rem;
             line-height: 1.8;
@@ -65,7 +64,6 @@
         .nosotros-texto h3 { color: var(--azul-oscuro); margin-bottom: 10px; font-size: 1.3rem; }
         .nosotros-texto p { color: var(--texto-claro); margin-bottom: 25px; font-size: 1.05rem; }
         
-        /* Contenedor de la imagen con efecto decorativo */
         .nosotros-imagen { 
             flex: 1; 
             position: relative; 
@@ -73,18 +71,18 @@
         }
         .nosotros-imagen img { 
             width: 100%; 
-            min-height: 450px; /* Obliga a la imagen a ser más grande */
-            object-fit: cover; /* Recorta la imagen de forma profesional para que no se deforme */
+            min-height: 450px; 
+            object-fit: cover; 
             border-radius: 12px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15); /* Sombra elegante */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
             position: relative;
             z-index: 2;
             transition: transform 0.4s ease;
         }
         .nosotros-imagen:hover img {
-            transform: translateY(-8px); /* Efecto al pasar el mouse */
+            transform: translateY(-8px); 
         }
-        /* Marco azul decorativo detrás de la imagen */
+        /* El efecto de marco azul (Offset Border) */
         .nosotros-imagen::after {
             content: '';
             position: absolute;
@@ -128,11 +126,10 @@
             .inicio-texto { text-align: center; }
             .inicio-texto h1 { font-size: 2.8rem; }
             
-            /* Ajustes móviles para Nosotros */
             .nosotros-container { flex-direction: column; text-align: center; gap: 40px; }
             .nosotros-texto { order: 2; }
             .nosotros-imagen { order: 1; }
-            .nosotros-imagen::after { top: 15px; right: -10px; /* Ajusta el marco en celulares */ }
+            .nosotros-imagen::after { top: 15px; right: -10px; }
             
             .contacto-container { flex-direction: column; text-align: center; }
         }
@@ -164,11 +161,10 @@
         </div>
     </section>
 
-    <!-- Sección 2: ¿Quiénes Somos? (ACTUALIZADA) -->
+    <!-- Sección 2: ¿Quiénes Somos? -->
     <section id="nosotros">
         <h2 class="section-title">¿Quiénes Somos?</h2>
         
-        <!-- Párrafo centrado liberado de las columnas -->
         <p class="nosotros-intro">
             Somos una empresa líder en soporte tecnológico e infraestructura IT. Nos dedicamos a diseñar, implementar y administrar soluciones de virtualización, redes y almacenamiento seguro adaptadas a la medida y exigencias del sector empresarial moderno.
         </p>
@@ -176,7 +172,7 @@
         <div class="nosotros-container">
             <div class="nosotros-texto">
                 <h3>Misión</h3>
-                <p>Garantizar la continuidad operativa y la protección de la información de nuestros clientes a través de servicios de infraestructura IT de alta disponibilidad, soporte técnico especializado y una plataforma en la nube sumamente segura.</p>
+                <p>Garantizar la continuity operativa y la protección de la información de nuestros clientes a través de servicios de infraestructura IT de alta disponibilidad, soporte técnico especializado y una plataforma en la nube sumamente segura.</p>
                 
                 <h3>Visión</h3>
                 <p>Consolidarnos como el aliado tecnológico estratégico por excelencia para las empresas a nivel nacional, siendo reconocidos por nuestra excelencia técnica, integridad y el constante desarrollo de soluciones IT innovadoras.</p>
@@ -186,8 +182,8 @@
             </div>
             
             <div class="nosotros-imagen">
-                <!-- Imagen enlazada desde Unsplash -->
-                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop" alt="Rack de Servidores e Infraestructura">
+                <!-- Nueva imagen de Data Center moderno y brillante con luces azules -->
+                <img src="https://images.unsplash.com/photo-1597761011667-0c7f7bc19a16?q=80&w=1000&auto=format&fit=crop" alt="Pasillo de Servidores Data Center">
             </div>
         </div>
     </section>
