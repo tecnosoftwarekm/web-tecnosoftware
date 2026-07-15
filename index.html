@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoSoftware Solutions | Cloud & Soluciones IT</title>
     <style>
-        /* Variables y Paleta de Colores */
+        /* Variables y Estilos Base (Se mantienen igual) */
         :root {
             --azul-primario: #2D7DEB;
             --azul-oscuro: #1A4A8D;
@@ -15,289 +15,107 @@
             --blanco: #FFFFFF;
         }
 
-        /* Reset y Estilos Generales */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        html {
-            scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en el menú */
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--texto-oscuro);
-            line-height: 1.6;
-            background-color: var(--blanco);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--texto-oscuro); line-height: 1.6; background-color: var(--blanco); }
 
-        /* Menú de Navegación Superior (Fijo) */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 50px;
-        }
-        .logo-container img {
-            height: 50px;
-            display: block;
-        }
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: var(--texto-oscuro);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-        nav ul li a:hover {
-            color: var(--azul-primario);
-        }
+        /* Menú (Se mantiene igual) */
+        header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.08); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; }
+        .logo-container img { height: 50px; display: block; }
+        nav ul { display: flex; list-style: none; gap: 25px; }
+        nav ul li a { text-decoration: none; color: var(--texto-oscuro); font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease; }
+        nav ul li a:hover { color: var(--azul-primario); }
 
-        /* Secciones Base */
-        section {
-            padding: 100px 20px 80px 20px; /* Margen superior para que no lo tape el menú fijo */
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            color: var(--azul-oscuro);
-            margin-bottom: 40px;
-            position: relative;
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: var(--azul-primario);
-            margin: 10px auto 0 auto;
-            border-radius: 2px;
-        }
+        /* Títulos de sección */
+        section { padding: 120px 20px 80px 20px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--azul-oscuro); margin-bottom: 40px; position: relative; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background-color: var(--azul-primario); margin: 10px auto 0 auto; border-radius: 2px; }
 
-        /* Sección INICIO (Hero) */
+        /* --- NUEVO: SECCIÓN INICIO (SPLIT LAYOUT) --- */
         #inicio {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 90vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
+            justify-content: space-between;
             max-width: 100%;
-            padding-top: 140px;
+            padding: 120px 10% 80px 10%; /* Espaciado lateral */
         }
-        #inicio h1 {
-            font-size: 3rem;
-            color: var(--azul-oscuro);
-            margin-bottom: 15px;
-        }
-        #inicio p {
-            font-size: 1.3rem;
-            color: var(--azul-primario);
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-        .btn-principal {
-            background-color: var(--azul-primario);
-            color: var(--blanco);
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: background 0.3s ease;
-        }
-        .btn-principal:hover {
-            background-color: var(--azul-oscuro);
-        }
-
-        /* Sección ¿QUIÉNES SOMOS? */
-        .nosotros-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        .nosotros-card {
-            background: var(--fondo-claro);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            border-top: 4px solid var(--azul-primario);
-        }
-        .nosotros-card h3 {
-            color: var(--azul-oscuro);
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-        }
-
-        /* Sección NUESTROS SERVICIOS */
-        #servicios {
-            background-color: var(--fondo-claro);
-            max-width: 100%;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        .servicios-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .servicios-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-        .servicio-card {
-            background: var(--blanco);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .servicio-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .servicio-card h3 {
-            color: var(--azul-oscuro);
-            margin-bottom: 15px;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .servicio-card p {
-            color: var(--texto-claro);
-            font-size: 0.95rem;
-        }
-        .btn-cloud {
-            display: inline-block;
-            margin-top: 15px;
-            color: var(--azul-primario);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-        .btn-cloud:hover {
-            text-decoration: underline;
-        }
-
-        /* Sección CONTACTO */
-        .contacto-container {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 50px;
-            align-items: start;
-        }
-        .contacto-info h3 {
-            color: var(--azul-oscuro);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        .contacto-info p {
-            margin-bottom: 15px;
-            font-size: 1.05rem;
-        }
-        .contacto-info strong {
-            color: var(--azul-primario);
-        }
-
-        /* Formulario de Contacto */
-        .contacto-form {
-            background-color: var(--fondo-claro);
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .form-group {
-            margin-bottom: 20px;
+        .inicio-texto {
+            flex: 1;
+            padding-right: 50px;
             text-align: left;
         }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
+        .inicio-texto h1 { font-size: 3.5rem; color: var(--azul-oscuro); margin-bottom: 15px; line-height: 1.2; }
+        .inicio-texto p { font-size: 1.3rem; color: var(--azul-primario); font-weight: bold; margin-bottom: 30px; }
+        .inicio-imagen {
+            flex: 1;
+            text-align: right;
         }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: border-color 0.3s;
+        .inicio-imagen img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--azul-primario);
+        .btn-principal { background-color: var(--azul-primario); color: var(--blanco); padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: 600; transition: background 0.3s ease; display: inline-block; }
+        .btn-principal:hover { background-color: var(--azul-oscuro); }
+
+        /* --- NUEVO: SECCIÓN NOSOTROS (SPLIT LAYOUT) --- */
+        .nosotros-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
         }
-        .btn-enviar {
-            background-color: var(--azul-primario);
-            color: var(--blanco);
-            border: none;
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.3s ease;
-        }
-        .btn-enviar:hover {
-            background-color: var(--azul-oscuro);
+        .nosotros-texto { flex: 1; }
+        .nosotros-texto p { color: var(--texto-claro); margin-bottom: 20px; font-size: 1.05rem; }
+        .nosotros-texto h3 { color: var(--azul-oscuro); margin-top: 25px; margin-bottom: 10px; font-size: 1.3rem; }
+        .nosotros-imagen { flex: 1; }
+        .nosotros-imagen img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
 
-        /* Pie de Página */
-        footer {
-            background-color: var(--azul-oscuro);
-            color: var(--blanco);
-            text-align: center;
-            padding: 30px 20px;
-            font-size: 0.9rem;
-        }
+        /* Servicios, Contacto y Footer (Se mantienen igual a tu diseño actual) */
+        #servicios { background-color: var(--fondo-claro); max-width: 100%; padding-left: 20px; padding-right: 20px; }
+        .servicios-container { max-width: 1200px; margin: 0 auto; }
+        .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .servicio-card { background: var(--blanco); border-radius: 8px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
+        .servicio-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .servicio-card h3 { color: var(--azul-oscuro); margin-bottom: 15px; font-size: 1.25rem; }
+        .servicio-card p { color: var(--texto-claro); font-size: 0.95rem; }
+        .btn-cloud { display: inline-block; margin-top: 15px; color: var(--azul-primario); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        
+        .contacto-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px; align-items: start; }
+        .contacto-info h3 { color: var(--azul-oscuro); margin-bottom: 20px; font-size: 1.5rem; }
+        .contacto-info p { margin-bottom: 15px; font-size: 1.05rem; }
+        .contacto-info strong { color: var(--azul-primario); }
+        .contacto-form { background-color: var(--fondo-claro); padding: 40px; border-radius: 8px; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
+        .btn-enviar { background-color: var(--azul-primario); color: var(--blanco); border: none; padding: 12px 25px; font-size: 1rem; border-radius: 4px; cursor: pointer; width: 100%; }
+        footer { background-color: var(--azul-oscuro); color: var(--blanco); text-align: center; padding: 30px 20px; font-size: 0.9rem; }
 
-        /* Responsividad (Móviles) */
-        @media (max-width: 768px) {
-            header {
+        /* Responsividad (Para que en celulares las columnas se pongan una debajo de otra) */
+        @media (max-width: 900px) {
+            #inicio, .nosotros-container, .contacto-container {
                 flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
+                padding-top: 100px;
+                text-align: center;
             }
-            nav ul {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            #inicio h1 {
-                font-size: 2.2rem;
-            }
-            .contacto-container {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            .contacto-form {
-                padding: 25px;
-            }
+            .inicio-texto { padding-right: 0; text-align: center; margin-bottom: 40px; }
+            .inicio-imagen { text-align: center; }
+            .nosotros-texto { text-align: left; order: 2; }
+            .nosotros-imagen { order: 1; margin-bottom: 30px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Menú -->
     <header>
         <div class="logo-container">
             <img src="logo.png" alt="TecnoSoftware Solutions Logo">
@@ -312,33 +130,45 @@
         </nav>
     </header>
 
+    <!-- Sección 1: Inicio (NUEVO DISEÑO DIVIDIDO) -->
     <section id="inicio">
-        <h1>TecnoSoftware Solutions KM, C.A.</h1>
-        <p>¡Donde tu información está segura!</p>
-        <a href="#servicios" class="btn-principal">Ver Servicios</a>
+        <div class="inicio-texto">
+            <h1>TecnoSoftware Solutions KM, C.A.</h1>
+            <p>¡Donde tu información está segura!</p>
+            <a href="#servicios" class="btn-principal">Ver Servicios</a>
+        </div>
+        <div class="inicio-imagen">
+            <!-- Sube una imagen o GIF a GitHub llamada hero-image.png -->
+            <img src="hero-image.png" alt="Tecnología e Infraestructura Cloud">
+        </div>
     </section>
 
+    <!-- Sección 2: ¿Quiénes Somos? (NUEVO DISEÑO DIVIDIDO) -->
     <section id="nosotros">
         <h2 class="section-title">¿Quiénes Somos?</h2>
-        <p style="text-align: center; max-width: 800px; margin: 0 auto 40px auto; color: var(--texto-claro);">
-            Somos una empresa líder en soporte tecnológico e infraestructura IT. Nos dedicamos a diseñar, implementar y administrar soluciones de virtualización, redes y almacenamiento seguro adaptadas a la medida y exigencias del sector empresarial moderno.
-        </p>
-        <div class="nosotros-grid">
-            <div class="nosotros-card">
+        
+        <div class="nosotros-container">
+            <div class="nosotros-texto">
+                <p>Somos una empresa líder en soporte tecnológico e infraestructura IT. Nos dedicamos a diseñar, implementar y administrar soluciones de virtualización, redes y almacenamiento seguro adaptadas a la medida y exigencias del sector empresarial moderno.</p>
+                
                 <h3>Misión</h3>
                 <p>Garantizar la continuidad operativa y la protección de la información de nuestros clientes a través de servicios de infraestructura IT de alta disponibilidad, soporte técnico especializado y una plataforma en la nube sumamente segura.</p>
-            </div>
-            <div class="nosotros-card">
+                
                 <h3>Visión</h3>
                 <p>Consolidarnos como el aliado tecnológico estratégico por excelencia para las empresas a nivel nacional, siendo reconocidos por nuestra excelencia técnica, integridad y el constante desarrollo de soluciones IT innovadoras.</p>
-            </div>
-            <div class="nosotros-card">
+
                 <h3>Historia</h3>
                 <p>Nacimos de la necesidad del mercado empresarial de contar con un soporte técnico real, especialista y oportuno. A lo largo de nuestra trayectoria, hemos evolucionado integrando tecnologías de vanguardia como virtualización avanzada y nuestra propia infraestructura cloud para respaldos corporativos automatizados.</p>
+            </div>
+            
+            <div class="nosotros-imagen">
+                <!-- Sube una imagen a GitHub llamada servidores.jpg -->
+                <img src="servidores.jpg" alt="Rack de Servidores e Infraestructura">
             </div>
         </div>
     </section>
 
+    <!-- Sección 3: Nuestros Servicios (Mantenemos la cuadrícula limpia) -->
     <section id="servicios">
         <div class="servicios-container">
             <h2 class="section-title">Nuestros Servicios</h2>
@@ -379,19 +209,17 @@
         </div>
     </section>
 
+    <!-- Sección 4: Contacto (Se mantiene igual) -->
     <section id="contacto">
         <h2 class="section-title">Contacto</h2>
         <div class="contacto-container">
-            
             <div class="contacto-info">
                 <h3>¡Hablemos de tu proyecto!</h3>
                 <p>Ponte en contacto con nuestro equipo de especialistas. Estamos listos para brindarte la asesoría y el soporte que tu negocio requiere.</p>
-                
                 <p style="margin-top: 30px;"><strong>Teléfono de Soporte / Ventas:</strong><br>0412-4755775</p>
                 <p><strong>Correo Electrónico:</strong><br>tecnosoftwarekm@gmail.com</p>
                 <p><strong>Ubicación Corporativa:</strong><br>Valencia, Carabobo, Venezuela.</p>
             </div>
-
             <form class="contacto-form" action="https://formspree.io/f/tu-id-de-formulario" method="POST">
                 <div class="form-group">
                     <label for="nombre">Nombre o Razón Social</label>
@@ -411,7 +239,6 @@
                 </div>
                 <button type="submit" class="btn-enviar">Enviar Mensaje</button>
             </form>
-
         </div>
     </section>
 
