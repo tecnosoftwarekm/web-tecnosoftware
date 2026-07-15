@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoSoftware Solutions | Cloud & Soluciones IT</title>
     <style>
-        /* Variables y Estilos Base (Se mantienen igual) */
+        /* Variables y Estilos Base */
         :root {
             --azul-primario: #2D7DEB;
             --azul-oscuro: #1A4A8D;
@@ -19,75 +19,69 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--texto-oscuro); line-height: 1.6; background-color: var(--blanco); }
 
-        /* Menú (Se mantiene igual) */
+        /* Menú de Navegación */
         header { position: fixed; top: 0; left: 0; width: 100%; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.08); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; }
         .logo-container img { height: 50px; display: block; }
         nav ul { display: flex; list-style: none; gap: 25px; }
         nav ul li a { text-decoration: none; color: var(--texto-oscuro); font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease; }
         nav ul li a:hover { color: var(--azul-primario); }
 
-        /* Títulos de sección */
+        /* Títulos de sección generales */
         section { padding: 120px 20px 80px 20px; max-width: 1200px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 2.2rem; color: var(--azul-oscuro); margin-bottom: 40px; position: relative; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background-color: var(--azul-primario); margin: 10px auto 0 auto; border-radius: 2px; }
 
-        /* --- NUEVO: SECCIÓN INICIO (SPLIT LAYOUT) --- */
+        /* --- SECCIÓN INICIO (FONDO DE IMAGEN Y TEXTO BLANCO) --- */
         #inicio {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            /* Capa oscura semitransparente + URL de la imagen de fondo */
+            background: linear-gradient(rgba(10, 25, 50, 0.65), rgba(10, 25, 50, 0.65)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
             min-height: 90vh;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start; /* Alinea el contenido a la izquierda */
             max-width: 100%;
-            padding: 120px 10% 80px 10%; /* Espaciado lateral */
+            padding: 120px 10% 80px 10%;
         }
         .inicio-texto {
-            flex: 1;
-            padding-right: 50px;
+            max-width: 700px; /* Evita que el texto cruce toda la pantalla */
             text-align: left;
         }
-        .inicio-texto h1 { font-size: 3.5rem; color: var(--azul-oscuro); margin-bottom: 15px; line-height: 1.2; }
-        .inicio-texto p { font-size: 1.3rem; color: var(--azul-primario); font-weight: bold; margin-bottom: 30px; }
-        .inicio-imagen {
-            flex: 1;
-            text-align: right;
+        .inicio-texto h1 { 
+            font-size: 3.8rem; 
+            color: var(--blanco); /* Letras Blancas */
+            margin-bottom: 15px; 
+            line-height: 1.2; 
         }
-        .inicio-imagen img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .inicio-texto p { 
+            font-size: 1.4rem; 
+            color: #E2E8F0; /* Un tono gris/azulado muy claro para que el subtítulo destaque elegante */
+            font-weight: bold; 
+            margin-bottom: 35px; 
         }
-        .btn-principal { background-color: var(--azul-primario); color: var(--blanco); padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: 600; transition: background 0.3s ease; display: inline-block; }
-        .btn-principal:hover { background-color: var(--azul-oscuro); }
+        .btn-principal { background-color: var(--azul-primario); color: var(--blanco); padding: 12px 35px; text-decoration: none; border-radius: 5px; font-size: 1.1rem; font-weight: 600; transition: background 0.3s ease; display: inline-block; }
+        .btn-principal:hover { background-color: #1557c0; }
 
-        /* --- NUEVO: SECCIÓN NOSOTROS (SPLIT LAYOUT) --- */
-        .nosotros-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 50px;
-        }
+        /* --- SECCIÓN NOSOTROS (SPLIT LAYOUT) --- */
+        .nosotros-container { display: flex; align-items: center; justify-content: space-between; gap: 50px; }
         .nosotros-texto { flex: 1; }
         .nosotros-texto p { color: var(--texto-claro); margin-bottom: 20px; font-size: 1.05rem; }
         .nosotros-texto h3 { color: var(--azul-oscuro); margin-top: 25px; margin-bottom: 10px; font-size: 1.3rem; }
         .nosotros-imagen { flex: 1; }
-        .nosotros-imagen img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        }
+        .nosotros-imagen img { max-width: 100%; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
 
-        /* Servicios, Contacto y Footer (Se mantienen igual a tu diseño actual) */
+        /* --- SECCIÓN SERVICIOS --- */
         #servicios { background-color: var(--fondo-claro); max-width: 100%; padding-left: 20px; padding-right: 20px; }
         .servicios-container { max-width: 1200px; margin: 0 auto; }
         .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .servicio-card { background: var(--blanco); border-radius: 8px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
-        .servicio-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .servicio-card { background: var(--blanco); border-radius: 8px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease; border-top: 3px solid transparent; }
+        .servicio-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 3px solid var(--azul-primario); }
         .servicio-card h3 { color: var(--azul-oscuro); margin-bottom: 15px; font-size: 1.25rem; }
         .servicio-card p { color: var(--texto-claro); font-size: 0.95rem; }
         .btn-cloud { display: inline-block; margin-top: 15px; color: var(--azul-primario); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
         
+        /* --- SECCIÓN CONTACTO --- */
         .contacto-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px; align-items: start; }
         .contacto-info h3 { color: var(--azul-oscuro); margin-bottom: 20px; font-size: 1.5rem; }
         .contacto-info p { margin-bottom: 15px; font-size: 1.05rem; }
@@ -96,18 +90,18 @@
         .form-group { margin-bottom: 20px; text-align: left; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
-        .btn-enviar { background-color: var(--azul-primario); color: var(--blanco); border: none; padding: 12px 25px; font-size: 1rem; border-radius: 4px; cursor: pointer; width: 100%; }
+        .btn-enviar { background-color: var(--azul-primario); color: var(--blanco); border: none; padding: 12px 25px; font-size: 1rem; border-radius: 4px; cursor: pointer; width: 100%; transition: background 0.3s; }
+        .btn-enviar:hover { background-color: var(--azul-oscuro); }
         footer { background-color: var(--azul-oscuro); color: var(--blanco); text-align: center; padding: 30px 20px; font-size: 0.9rem; }
 
-        /* Responsividad (Para que en celulares las columnas se pongan una debajo de otra) */
+        /* Responsividad para móviles */
         @media (max-width: 900px) {
-            #inicio, .nosotros-container, .contacto-container {
-                flex-direction: column;
-                padding-top: 100px;
-                text-align: center;
-            }
-            .inicio-texto { padding-right: 0; text-align: center; margin-bottom: 40px; }
-            .inicio-imagen { text-align: center; }
+            header { flex-direction: column; gap: 15px; padding: 15px 20px; }
+            nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; }
+            #inicio { padding-top: 150px; text-align: center; justify-content: center; }
+            .inicio-texto { text-align: center; }
+            .inicio-texto h1 { font-size: 2.8rem; }
+            .nosotros-container, .contacto-container { flex-direction: column; text-align: center; }
             .nosotros-texto { text-align: left; order: 2; }
             .nosotros-imagen { order: 1; margin-bottom: 30px; }
         }
@@ -130,20 +124,16 @@
         </nav>
     </header>
 
-    <!-- Sección 1: Inicio (NUEVO DISEÑO DIVIDIDO) -->
+    <!-- Sección 1: Inicio (NUEVO DISEÑO CON FONDO DE IMAGEN Y TEXTO BLANCO) -->
     <section id="inicio">
         <div class="inicio-texto">
             <h1>TecnoSoftware Solutions KM, C.A.</h1>
             <p>¡Donde tu información está segura!</p>
             <a href="#servicios" class="btn-principal">Ver Servicios</a>
         </div>
-        <div class="inicio-imagen">
-            <!-- Sube una imagen o GIF a GitHub llamada hero-image.png -->
-            <img src="hero-image.png" alt="Tecnología e Infraestructura Cloud">
-        </div>
     </section>
 
-    <!-- Sección 2: ¿Quiénes Somos? (NUEVO DISEÑO DIVIDIDO) -->
+    <!-- Sección 2: ¿Quiénes Somos? -->
     <section id="nosotros">
         <h2 class="section-title">¿Quiénes Somos?</h2>
         
@@ -162,13 +152,13 @@
             </div>
             
             <div class="nosotros-imagen">
-                <!-- Sube una imagen a GitHub llamada servidores.jpg -->
-                <img src="servidores.jpg" alt="Rack de Servidores e Infraestructura">
+                <!-- Imagen enlazada directamente desde Unsplash -->
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop" alt="Rack de Servidores e Infraestructura">
             </div>
         </div>
     </section>
 
-    <!-- Sección 3: Nuestros Servicios (Mantenemos la cuadrícula limpia) -->
+    <!-- Sección 3: Nuestros Servicios -->
     <section id="servicios">
         <div class="servicios-container">
             <h2 class="section-title">Nuestros Servicios</h2>
@@ -209,7 +199,7 @@
         </div>
     </section>
 
-    <!-- Sección 4: Contacto (Se mantiene igual) -->
+    <!-- Sección 4: Contacto -->
     <section id="contacto">
         <h2 class="section-title">Contacto</h2>
         <div class="contacto-container">
