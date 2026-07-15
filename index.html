@@ -5,80 +5,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoSoftware Solutions | Cloud & Soluciones IT</title>
     <style>
-        /* Estilos Base y Paleta de Colores */
+        /* Variables y Paleta de Colores */
         :root {
             --azul-primario: #2D7DEB;
             --azul-oscuro: #1A4A8D;
             --texto-oscuro: #333333;
+            --texto-claro: #666666;
             --fondo-claro: #F4F7F6;
+            --blanco: #FFFFFF;
+        }
+
+        /* Reset y Estilos Generales */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en el menú */
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
             color: var(--texto-oscuro);
-            background-color: white;
+            line-height: 1.6;
+            background-color: var(--blanco);
         }
-        /* Encabezado */
+
+        /* Menú de Navegación Superior (Fijo) */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 50px;
         }
         .logo-container img {
-            height: 60px;
+            height: 50px;
+            display: block;
         }
-        /* Sección Hero (Principal) */
-        .hero {
-            background-color: var(--fondo-claro);
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--texto-oscuro);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: var(--azul-primario);
+        }
+
+        /* Secciones Base */
+        section {
+            padding: 100px 20px 80px 20px; /* Margen superior para que no lo tape el menú fijo */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
             text-align: center;
-            padding: 80px 20px;
-        }
-        .hero h1 {
+            font-size: 2.2rem;
             color: var(--azul-oscuro);
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            margin-bottom: 40px;
+            position: relative;
         }
-        .hero p {
-            font-size: 1.2em;
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--azul-primario);
+            margin: 10px auto 0 auto;
+            border-radius: 2px;
+        }
+
+        /* Sección INICIO (Hero) */
+        #inicio {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            max-width: 100%;
+            padding-top: 140px;
+        }
+        #inicio h1 {
+            font-size: 3rem;
+            color: var(--azul-oscuro);
+            margin-bottom: 15px;
+        }
+        #inicio p {
+            font-size: 1.3rem;
             color: var(--azul-primario);
             font-weight: bold;
-        }
-        /* Secciones Generales */
-        .seccion {
-            padding: 60px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        .seccion h2 {
-            color: var(--azul-primario);
             margin-bottom: 30px;
         }
-        /* Cuadros de Servicios */
-        .servicios-grid {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+        .btn-principal {
+            background-color: var(--azul-primario);
+            color: var(--blanco);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s ease;
         }
-        .servicio-card {
-            background: white;
-            border: 1px solid #ddd;
+        .btn-principal:hover {
+            background-color: var(--azul-oscuro);
+        }
+
+        /* Sección ¿QUIÉNES SOMOS? */
+        .nosotros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .nosotros-card {
+            background: var(--fondo-claro);
             padding: 30px;
             border-radius: 8px;
-            width: 300px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-top: 4px solid var(--azul-primario);
         }
-        /* Pie de página */
+        .nosotros-card h3 {
+            color: var(--azul-oscuro);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        /* Sección NUESTROS SERVICIOS */
+        #servicios {
+            background-color: var(--fondo-claro);
+            max-width: 100%;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .servicios-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        .servicio-card {
+            background: var(--blanco);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .servicio-card h3 {
+            color: var(--azul-oscuro);
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .servicio-card p {
+            color: var(--texto-claro);
+            font-size: 0.95rem;
+        }
+        .btn-cloud {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--azul-primario);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .btn-cloud:hover {
+            text-decoration: underline;
+        }
+
+        /* Sección CONTACTO */
+        .contacto-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+            align-items: start;
+        }
+        .contacto-info h3 {
+            color: var(--azul-oscuro);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .contacto-info p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        .contacto-info strong {
+            color: var(--azul-primario);
+        }
+
+        /* Formulario de Contacto */
+        .contacto-form {
+            background-color: var(--fondo-claro);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--azul-primario);
+        }
+        .btn-enviar {
+            background-color: var(--azul-primario);
+            color: var(--blanco);
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        .btn-enviar:hover {
+            background-color: var(--azul-oscuro);
+        }
+
+        /* Pie de Página */
         footer {
             background-color: var(--azul-oscuro);
-            color: white;
+            color: var(--blanco);
             text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsividad (Móviles) */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            #inicio h1 {
+                font-size: 2.2rem;
+            }
+            .contacto-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .contacto-form {
+                padding: 25px;
+            }
         }
     </style>
 </head>
@@ -88,52 +302,121 @@
         <div class="logo-container">
             <img src="logo.png" alt="TecnoSoftware Solutions Logo">
         </div>
-        <div class="contacto-header">
-            <strong>Soporte IT y Cloud</strong>
-        </div>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#nosotros">¿Quiénes somos?</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <section class="hero">
+    <section id="inicio">
         <h1>TecnoSoftware Solutions KM, C.A.</h1>
         <p>¡Donde tu información está segura!</p>
+        <a href="#servicios" class="btn-principal">Ver Servicios</a>
     </section>
 
-    <section class="seccion">
-        <h2>¿Quiénes Somos?</h2>
-        <p>Somos especialistas en infraestructura tecnológica, virtualización y almacenamiento en la nube. Diseñamos soluciones a la medida para garantizar la continuidad operativa de tu empresa, protegiendo tus datos más críticos con los más altos estándares de seguridad y protocolos Zero Trust.</p>
-    </section>
-
-    <section class="seccion" style="background-color: var(--fondo-claro);">
-        <h2>Nuestros Servicios</h2>
-        <div class="servicios-grid">
-            <div class="servicio-card">
-                <h3 style="color: var(--azul-oscuro);">Almacenamiento Cloud</h3>
-                <p>Servidores dedicados y respaldos automatizados para empresas, garantizando acceso rápido y encriptado a tu información.</p>
+    <section id="nosotros">
+        <h2 class="section-title">¿Quiénes Somos?</h2>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto 40px auto; color: var(--texto-claro);">
+            Somos una empresa líder en soporte tecnológico e infraestructura IT. Nos dedicamos a diseñar, implementar y administrar soluciones de virtualización, redes y almacenamiento seguro adaptadas a la medida y exigencias del sector empresarial moderno.
+        </p>
+        <div class="nosotros-grid">
+            <div class="nosotros-card">
+                <h3>Misión</h3>
+                <p>Garantizar la continuidad operativa y la protección de la información de nuestros clientes a través de servicios de infraestructura IT de alta disponibilidad, soporte técnico especializado y una plataforma en la nube sumamente segura.</p>
             </div>
-            <div class="servicio-card">
-                <h3 style="color: var(--azul-oscuro);">Respaldo CCTV</h3>
-                <p>Sincronización unidireccional segura para sistemas de videovigilancia. Tus grabaciones protegidas fuera de tus instalaciones.</p>
+            <div class="nosotros-card">
+                <h3>Visión</h3>
+                <p>Consolidarnos como el aliado tecnológico estratégico por excelencia para las empresas a nivel nacional, siendo reconocidos por nuestra excelencia técnica, integridad y el constante desarrollo de soluciones IT innovadoras.</p>
+            </div>
+            <div class="nosotros-card">
+                <h3>Historia</h3>
+                <p>Nacimos de la necesidad del mercado empresarial de contar con un soporte técnico real, especialista y oportuno. A lo largo de nuestra trayectoria, hemos evolucionado integrando tecnologías de vanguardia como virtualización avanzada y nuestra propia infraestructura cloud para respaldos corporativos automatizados.</p>
             </div>
         </div>
     </section>
 
-    <section class="seccion">
-        <h2>Síguenos en Instagram</h2>
-        <p>Entérate de nuestras últimas instalaciones y soluciones tecnológicas.</p>
-        <div style="border: 2px dashed #ccc; padding: 50px; color: #888;">
-            [Espacio reservado para el Feed de Instagram]
+    <section id="servicios">
+        <div class="servicios-container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="servicios-grid">
+                
+                <div class="servicio-card">
+                    <h3>Soporte Técnico</h3>
+                    <p>Brindamos soporte informático especializado en todos sus niveles. Resolución de incidencias, mantenimiento preventivo y correctivo de hardware y software para mantener tu empresa activa.</p>
+                </div>
+
+                <div class="servicio-card">
+                    <h3>Seguridad y Monitoreo</h3>
+                    <p>Diseño e instalación de sistemas de cámaras de seguridad (CCTV), control de acceso biométrico y sistemas de alarma. Protegemos tus espacios físicos de forma inteligente.</p>
+                </div>
+
+                <div class="servicio-card">
+                    <h3>Servidores y Sistemas</h3>
+                    <p>Especialistas en configuración, virtualización y administración de servidores físicos y virtuales. Maximizamos el rendimiento de tu infraestructura local.</p>
+                </div>
+
+                <div class="servicio-card">
+                    <h3>Servicio en la Nube</h3>
+                    <p>Contamos con una infraestructura de nube propia diseñada específicamente para respaldos corporativos automatizados y seguros.</p>
+                    <a href="https://cloud.tecnosoftwaresolutions.com" target="_blank" class="btn-cloud">Acceder a Tecno Cloud &rarr;</a>
+                </div>
+
+                <div class="servicio-card">
+                    <h3>Centrales Telefónicas</h3>
+                    <p>Implementación y mantenimiento de soluciones de telefonía y redes de comunicación eficientes para facilitar el flujo de información de tu organización.</p>
+                </div>
+
+                <div class="servicio-card">
+                    <h3>Seguridad de Redes</h3>
+                    <p>Configuración de redes corporativas blindadas. Implementamos firewalls, túneles de seguridad Zero Trust y segmentación de red para evitar accesos no autorizados.</p>
+                </div>
+
+            </div>
         </div>
     </section>
 
-    <section class="seccion">
-        <h2>Contáctanos</h2>
-        <p><strong>Ubicación:</strong> Valencia, Carabobo, Venezuela.</p>
-        <p><strong>Teléfono:</strong> +58 412-0000000</p>
-        <p><strong>Correo:</strong> tecnosoftware.cloud@zohomail.com</p>
+    <section id="contacto">
+        <h2 class="section-title">Contacto</h2>
+        <div class="contacto-container">
+            
+            <div class="contacto-info">
+                <h3>¡Hablemos de tu proyecto!</h3>
+                <p>Ponte en contacto con nuestro equipo de especialistas. Estamos listos para brindarte la asesoría y el soporte que tu negocio requiere.</p>
+                
+                <p style="margin-top: 30px;"><strong>Teléfono de Soporte / Ventas:</strong><br>0412-4755775</p>
+                <p><strong>Correo Electrónico:</strong><br>tecnosoftwarekm@gmail.com</p>
+                <p><strong>Ubicación Corporativa:</strong><br>Valencia, Carabobo, Venezuela.</p>
+            </div>
+
+            <form class="contacto-form" action="https://formspree.io/f/tu-id-de-formulario" method="POST">
+                <div class="form-group">
+                    <label for="nombre">Nombre o Razón Social</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. Inversiones Alfa, C.A." required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Número de Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" placeholder="Ej. 0412-1234567" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="correo@empresa.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensaje">Mensaje / Requerimiento</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos brevemente qué tipo de solución o soporte necesitas..." required></textarea>
+                </div>
+                <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+            </form>
+
+        </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 TecnoSoftware Solutions KM, C.A Cloud - Soluciones IT.</p>
+        <p>&copy; 2026 TecnoSoftware Solutions KM, C.A. Cloud - Soluciones IT. Todos los derechos reservados.</p>
     </footer>
 
 </body>
