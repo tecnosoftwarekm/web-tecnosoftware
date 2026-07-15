@@ -28,48 +28,74 @@
 
         /* Títulos de sección generales */
         section { padding: 120px 20px 80px 20px; max-width: 1200px; margin: 0 auto; }
-        .section-title { text-align: center; font-size: 2.2rem; color: var(--azul-oscuro); margin-bottom: 40px; position: relative; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--azul-oscuro); margin-bottom: 20px; position: relative; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background-color: var(--azul-primario); margin: 10px auto 0 auto; border-radius: 2px; }
 
-        /* --- SECCIÓN INICIO (FONDO DE IMAGEN Y TEXTO BLANCO) --- */
+        /* --- SECCIÓN INICIO --- */
         #inicio {
-            /* Capa oscura semitransparente + URL de la imagen de fondo */
             background: linear-gradient(rgba(10, 25, 50, 0.65), rgba(10, 25, 50, 0.65)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             min-height: 90vh;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Alinea el contenido a la izquierda */
+            justify-content: flex-start;
             max-width: 100%;
             padding: 120px 10% 80px 10%;
         }
-        .inicio-texto {
-            max-width: 700px; /* Evita que el texto cruce toda la pantalla */
-            text-align: left;
-        }
-        .inicio-texto h1 { 
-            font-size: 3.8rem; 
-            color: var(--blanco); /* Letras Blancas */
-            margin-bottom: 15px; 
-            line-height: 1.2; 
-        }
-        .inicio-texto p { 
-            font-size: 1.4rem; 
-            color: #E2E8F0; /* Un tono gris/azulado muy claro para que el subtítulo destaque elegante */
-            font-weight: bold; 
-            margin-bottom: 35px; 
-        }
+        .inicio-texto { max-width: 700px; text-align: left; }
+        .inicio-texto h1 { font-size: 3.8rem; color: var(--blanco); margin-bottom: 15px; line-height: 1.2; }
+        .inicio-texto p { font-size: 1.4rem; color: #E2E8F0; font-weight: bold; margin-bottom: 35px; }
         .btn-principal { background-color: var(--azul-primario); color: var(--blanco); padding: 12px 35px; text-decoration: none; border-radius: 5px; font-size: 1.1rem; font-weight: 600; transition: background 0.3s ease; display: inline-block; }
         .btn-principal:hover { background-color: #1557c0; }
 
-        /* --- SECCIÓN NOSOTROS (SPLIT LAYOUT) --- */
-        .nosotros-container { display: flex; align-items: center; justify-content: space-between; gap: 50px; }
+        /* --- SECCIÓN NOSOTROS (ACTUALIZADA) --- */
+        /* Párrafo introductorio centrado */
+        .nosotros-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px auto; /* Espacio abajo antes de las columnas */
+            color: var(--texto-claro);
+            font-size: 1.15rem;
+            line-height: 1.8;
+        }
+
+        .nosotros-container { display: flex; align-items: stretch; justify-content: space-between; gap: 60px; }
         .nosotros-texto { flex: 1; }
-        .nosotros-texto p { color: var(--texto-claro); margin-bottom: 20px; font-size: 1.05rem; }
-        .nosotros-texto h3 { color: var(--azul-oscuro); margin-top: 25px; margin-bottom: 10px; font-size: 1.3rem; }
-        .nosotros-imagen { flex: 1; }
-        .nosotros-imagen img { max-width: 100%; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .nosotros-texto h3 { color: var(--azul-oscuro); margin-bottom: 10px; font-size: 1.3rem; }
+        .nosotros-texto p { color: var(--texto-claro); margin-bottom: 25px; font-size: 1.05rem; }
+        
+        /* Contenedor de la imagen con efecto decorativo */
+        .nosotros-imagen { 
+            flex: 1; 
+            position: relative; 
+            display: flex;
+        }
+        .nosotros-imagen img { 
+            width: 100%; 
+            min-height: 450px; /* Obliga a la imagen a ser más grande */
+            object-fit: cover; /* Recorta la imagen de forma profesional para que no se deforme */
+            border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); /* Sombra elegante */
+            position: relative;
+            z-index: 2;
+            transition: transform 0.4s ease;
+        }
+        .nosotros-imagen:hover img {
+            transform: translateY(-8px); /* Efecto al pasar el mouse */
+        }
+        /* Marco azul decorativo detrás de la imagen */
+        .nosotros-imagen::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: -25px;
+            width: 100%;
+            height: 100%;
+            border: 4px solid var(--azul-primario);
+            border-radius: 12px;
+            z-index: 1;
+        }
 
         /* --- SECCIÓN SERVICIOS --- */
         #servicios { background-color: var(--fondo-claro); max-width: 100%; padding-left: 20px; padding-right: 20px; }
@@ -101,9 +127,14 @@
             #inicio { padding-top: 150px; text-align: center; justify-content: center; }
             .inicio-texto { text-align: center; }
             .inicio-texto h1 { font-size: 2.8rem; }
-            .nosotros-container, .contacto-container { flex-direction: column; text-align: center; }
-            .nosotros-texto { text-align: left; order: 2; }
-            .nosotros-imagen { order: 1; margin-bottom: 30px; }
+            
+            /* Ajustes móviles para Nosotros */
+            .nosotros-container { flex-direction: column; text-align: center; gap: 40px; }
+            .nosotros-texto { order: 2; }
+            .nosotros-imagen { order: 1; }
+            .nosotros-imagen::after { top: 15px; right: -10px; /* Ajusta el marco en celulares */ }
+            
+            .contacto-container { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -124,7 +155,7 @@
         </nav>
     </header>
 
-    <!-- Sección 1: Inicio (NUEVO DISEÑO CON FONDO DE IMAGEN Y TEXTO BLANCO) -->
+    <!-- Sección 1: Inicio -->
     <section id="inicio">
         <div class="inicio-texto">
             <h1>TecnoSoftware Solutions KM, C.A.</h1>
@@ -133,14 +164,17 @@
         </div>
     </section>
 
-    <!-- Sección 2: ¿Quiénes Somos? -->
+    <!-- Sección 2: ¿Quiénes Somos? (ACTUALIZADA) -->
     <section id="nosotros">
         <h2 class="section-title">¿Quiénes Somos?</h2>
         
+        <!-- Párrafo centrado liberado de las columnas -->
+        <p class="nosotros-intro">
+            Somos una empresa líder en soporte tecnológico e infraestructura IT. Nos dedicamos a diseñar, implementar y administrar soluciones de virtualización, redes y almacenamiento seguro adaptadas a la medida y exigencias del sector empresarial moderno.
+        </p>
+
         <div class="nosotros-container">
             <div class="nosotros-texto">
-                <p>Somos una empresa líder en soporte tecnológico e infraestructura IT. Nos dedicamos a diseñar, implementar y administrar soluciones de virtualización, redes y almacenamiento seguro adaptadas a la medida y exigencias del sector empresarial moderno.</p>
-                
                 <h3>Misión</h3>
                 <p>Garantizar la continuidad operativa y la protección de la información de nuestros clientes a través de servicios de infraestructura IT de alta disponibilidad, soporte técnico especializado y una plataforma en la nube sumamente segura.</p>
                 
@@ -152,7 +186,7 @@
             </div>
             
             <div class="nosotros-imagen">
-                <!-- Imagen enlazada directamente desde Unsplash -->
+                <!-- Imagen enlazada desde Unsplash -->
                 <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop" alt="Rack de Servidores e Infraestructura">
             </div>
         </div>
