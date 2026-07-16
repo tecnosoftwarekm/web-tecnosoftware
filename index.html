@@ -31,9 +31,10 @@
         .section-title { text-align: center; font-size: 2.2rem; color: var(--azul-oscuro); margin-bottom: 20px; position: relative; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background-color: var(--azul-primario); margin: 10px auto 0 auto; border-radius: 2px; }
 
-        /* --- SECCIÓN INICIO (FONDO TECNOLÓGICO AZUL DIRECTO) --- */
+        /* --- SECCIÓN INICIO (FONDO ANIMADO PORTADA.GIF) --- */
         #inicio {
-            background: linear-gradient(rgba(10, 25, 50, 0.5), rgba(10, 25, 50, 0.8)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920&auto=format&fit=crop');
+            /* Busca el archivo portada.gif que vas a subir a tu GitHub */
+            background: linear-gradient(rgba(10, 25, 50, 0.4), rgba(10, 25, 50, 0.7)), url('portada.gif');
             background-size: cover;
             background-position: center;
             min-height: 90vh;
@@ -136,7 +137,6 @@
 </head>
 <body>
 
-    <!-- Menú -->
     <header>
         <div class="logo-container">
             <img src="logo.png" alt="TecnoSoftware Solutions Logo">
@@ -151,7 +151,6 @@
         </nav>
     </header>
 
-    <!-- Sección 1: Inicio -->
     <section id="inicio">
         <div class="inicio-texto">
             <h1>TecnoSoftware Solutions KM, C.A.</h1>
@@ -160,7 +159,6 @@
         </div>
     </section>
 
-    <!-- Sección 2: ¿Quiénes Somos? -->
     <section id="nosotros">
         <h2 class="section-title">¿Quiénes Somos?</h2>
         
@@ -181,13 +179,11 @@
             </div>
             
             <div class="nosotros-imagen">
-                <!-- Imagen del planeta con red global enlazada directamente -->
                 <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop" alt="Red Global y Tecnología">
             </div>
         </div>
     </section>
 
-    <!-- Sección 3: Nuestros Servicios -->
     <section id="servicios">
         <div class="servicios-container">
             <h2 class="section-title">Nuestros Servicios</h2>
@@ -228,7 +224,6 @@
         </div>
     </section>
 
-    <!-- Sección 4: Contacto -->
     <section id="contacto">
         <h2 class="section-title">Contacto</h2>
         <div class="contacto-container">
