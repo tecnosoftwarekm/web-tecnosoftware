@@ -62,7 +62,7 @@
 
         /* --- SECCIÓN NOSOTROS --- */
         .nosotros-intro {
-            text-align: justify; /* Texto justificado */
+            text-align: justify;
             max-width: 800px;
             margin: 0 auto 60px auto; 
             color: var(--texto-claro);
@@ -73,7 +73,7 @@
         .nosotros-container { display: flex; align-items: stretch; justify-content: space-between; gap: 60px; }
         .nosotros-texto { flex: 1; }
         .nosotros-texto h3 { color: var(--azul-oscuro); margin-bottom: 10px; font-size: 1.3rem; }
-        .nosotros-texto p { color: var(--texto-claro); margin-bottom: 25px; font-size: 1.05rem; text-align: justify; /* Texto justificado */ }
+        .nosotros-texto p { color: var(--texto-claro); margin-bottom: 25px; font-size: 1.05rem; text-align: justify; }
         
         .nosotros-imagen { 
             flex: 1; 
@@ -109,16 +109,46 @@
         #servicios { background-color: var(--fondo-claro); max-width: 100%; padding-left: 20px; padding-right: 20px; }
         .servicios-container { max-width: 1200px; margin: 0 auto; }
         .servicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .servicio-card { background: var(--blanco); border-radius: 8px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease; border-top: 3px solid transparent; }
+        .servicio-card { background: var(--blanco); border-radius: 8px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease; border-top: 3px solid transparent; display: flex; flex-direction: column; justify-content: space-between; }
         .servicio-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-top: 3px solid var(--azul-primario); }
         .servicio-card h3 { color: var(--azul-oscuro); margin-bottom: 15px; font-size: 1.25rem; }
-        .servicio-card p { color: var(--texto-claro); font-size: 0.95rem; text-align: justify; /* Texto justificado */ }
-        .btn-cloud { display: inline-block; margin-top: 15px; color: var(--azul-primario); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .servicio-card p { color: var(--texto-claro); font-size: 0.95rem; text-align: justify; margin-bottom: 20px; }
         
+        /* Botón de detalle estilo Oleica en cada tarjeta */
+        .btn-detalle {
+            background-color: transparent;
+            color: var(--azul-primario);
+            border: 1px solid var(--azul-primario);
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-start;
+            text-decoration: none;
+            text-align: center;
+        }
+        .btn-detalle:hover {
+            background-color: var(--azul-primario);
+            color: var(--blanco);
+        }
+
+        .btn-cloud { display: inline-block; margin-top: 15px; color: var(--azul-primario); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+
+        /* --- NUEVA SECCIÓN: NUESTRO PROCESO (Estilo Oleica) --- */
+        #proceso { background-color: var(--blanco); max-width: 100%; padding: 80px 20px; }
+        .proceso-container { max-width: 1200px; margin: 0 auto; }
+        .proceso-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        .proceso-step { background: var(--fondo-claro); padding: 30px 20px; border-radius: 8px; text-align: center; position: relative; border-bottom: 4px solid var(--azul-primario); }
+        .proceso-step span { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--azul-oscuro); color: var(--blanco); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 50%; font-size: 0.9rem; }
+        .proceso-step h4 { color: var(--azul-oscuro); margin: 15px 0 10px 0; font-size: 1.1rem; }
+        .proceso-step p { color: var(--texto-claro); font-size: 0.9rem; text-align: center; }
+
         /* --- SECCIÓN CONTACTO --- */
         .contacto-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px; align-items: start; }
         .contacto-info h3 { color: var(--azul-oscuro); margin-bottom: 20px; font-size: 1.5rem; }
-        .contacto-info p { margin-bottom: 15px; font-size: 1.05rem; text-align: justify; /* Texto justificado */ }
+        .contacto-info p { margin-bottom: 15px; font-size: 1.05rem; text-align: justify; }
         .contacto-info strong { color: var(--azul-primario); }
         .contacto-form { background-color: var(--fondo-claro); padding: 40px; border-radius: 8px; }
         .form-group { margin-bottom: 20px; text-align: left; }
@@ -141,7 +171,6 @@
             .nosotros-imagen { order: 1; }
             .nosotros-imagen::after { top: 15px; right: -10px; }
             
-            /* Ajuste del formulario para que pase abajo en móviles */
             .contacto-container { 
                 grid-template-columns: 1fr; 
                 text-align: center; 
@@ -161,6 +190,7 @@
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#nosotros">¿Quiénes somos?</a></li>
                 <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#proceso">Proceso</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
         </nav>
@@ -205,36 +235,85 @@
             <div class="servicios-grid">
                 
                 <div class="servicio-card">
-                    <h3>Soporte Técnico</h3>
-                    <p>Brindamos soporte informático especializado en todos sus niveles. Resolución de incidencias, mantenimiento preventivo y correctivo de hardware y software para mantener tu empresa activa.</p>
+                    <div>
+                        <h3>Soporte Técnico</h3>
+                        <p>Brindamos soporte informático especializado en todos sus niveles. Resolución de incidencias, mantenimiento preventivo y correctivo de hardware y software para mantener tu empresa activa.</p>
+                    </div>
+                    <a href="#contacto" class="btn-detalle">Solicitar Detalles</a>
                 </div>
 
                 <div class="servicio-card">
-                    <h3>Seguridad y Monitoreo</h3>
-                    <p>Diseño e instalación de sistemas de cámaras de seguridad (CCTV), control de acceso biométrico y sistemas de alarma. Protegemos tus espacios físicos de forma inteligente.</p>
+                    <div>
+                        <h3>Seguridad y Monitoreo</h3>
+                        <p>Diseño e instalación de sistemas de cámaras de seguridad (CCTV), control de acceso biométrico y sistemas de alarma. Protegemos tus espacios físicos de forma inteligente.</p>
+                    </div>
+                    <a href="#contacto" class="btn-detalle">Solicitar Detalles</a>
                 </div>
 
                 <div class="servicio-card">
-                    <h3>Servidores y Sistemas</h3>
-                    <p>Especialistas en configuración, virtualización y administración de servidores físicos y virtuales. Maximizamos el rendimiento de tu infraestructura local.</p>
+                    <div>
+                        <h3>Servidores y Sistemas</h3>
+                        <p>Especialistas en configuración, virtualización y administración de servidores físicos y virtuales. Maximizamos el rendimiento de tu infraestructura local.</p>
+                    </div>
+                    <a href="#contacto" class="btn-detalle">Solicitar Detalles</a>
                 </div>
 
                 <div class="servicio-card">
-                    <h3>Servicio en la Nube</h3>
-                    <p>Contamos con una infraestructura de nube propia diseñada específicamente para respaldos corporativos automatizados y seguros.</p>
-                    <a href="https://cloud.tecnosoftwaresolutions.com" target="_blank" class="btn-cloud">Acceder a Tecno Cloud &rarr;</a>
+                    <div>
+                        <h3>Servicio en la Nube</h3>
+                        <p>Contamos con una infraestructura de nube propia diseñada específicamente para respaldos corporativos automatizados y seguros.</p>
+                        <a href="https://cloud.tecnosoftwaresolutions.com" target="_blank" class="btn-cloud">Acceder a Tecno Cloud &rarr;</a>
+                    </div>
+                    <a href="#contacto" class="btn-detalle" style="margin-top: 15px;">Solicitar Detalles</a>
                 </div>
 
                 <div class="servicio-card">
-                    <h3>Centrales Telefónicas</h3>
-                    <p>Implementación y mantenimiento de soluciones de telefonía y redes de comunicación eficientes para facilitar el flujo de información de tu organización.</p>
+                    <div>
+                        <h3>Centrales Telefónicas</h3>
+                        <p>Implementación y mantenimiento de soluciones de telefonía y redes de comunicación eficientes para facilitar el flujo de información de tu organización.</p>
+                    </div>
+                    <a href="#contacto" class="btn-detalle">Solicitar Detalles</a>
                 </div>
 
                 <div class="servicio-card">
-                    <h3>Seguridad de Redes</h3>
-                    <p>Configuración de redes corporativas blindadas. Implementamos firewalls, túneles de seguridad Zero Trust y segmentación de red para evitar accesos no autorizados.</p>
+                    <div>
+                        <h3>Seguridad de Redes</h3>
+                        <p>Configuración de redes corporativas blindadas. Implementamos firewalls, túneles de seguridad Zero Trust y segmentación de red para evitar accesos no autorizados.</p>
+                    </div>
+                    <a href="#contacto" class="btn-detalle">Solicitar Detalles</a>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN DE PROCESO (Inspirado en Oleica) -->
+    <section id="proceso">
+        <div class="proceso-container">
+            <h2 class="section-title">Nuestro Proceso de Trabajo</h2>
+            <p style="text-align: center; color: var(--texto-claro); max-width: 700px; margin: 0 auto;">Garantizamos el éxito de cada implementación tecnológica siguiendo una metodología estructurada, segura y transparente.</p>
+            
+            <div class="proceso-grid">
+                <div class="proceso-step">
+                    <span>1</span>
+                    <h4>Diagnóstico</h4>
+                    <p>Evaluamos a fondo el estado actual de tu infraestructura IT y detectamos oportunidades de mejora.</p>
+                </div>
+                <div class="proceso-step">
+                    <span>2</span>
+                    <h4>Diseño y Arquitectura</h4>
+                    <p>Planificamos la solución a la medida exacta de tus requerimientos operativos y de presupuesto.</p>
+                </div>
+                <div class="proceso-step">
+                    <span>3</span>
+                    <h4>Implementación</h4>
+                    <p>Desplegamos los sistemas, servidores o redes minimizando cualquier tiempo de inactividad.</p>
+                </div>
+                <div class="proceso-step">
+                    <span>4</span>
+                    <h4>Soporte Continuo</h4>
+                    <p>Monitoreamos de manera constante y brindamos mantenimiento preventivo para asegurar estabilidad.</p>
+                </div>
             </div>
         </div>
     </section>
