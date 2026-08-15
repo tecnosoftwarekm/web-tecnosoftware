@@ -94,12 +94,10 @@
 
     <header>
         <div class="logo-container">
-            <!-- Asegúrate de tener el logo en la misma carpeta o ajustar la ruta -->
             <img src="logo-tecno-sinfondo.png" alt="TecnoSoftware Solutions Logo">
         </div>
         <nav>
             <ul>
-                <!-- Redirigimos a index.html para volver a la página principal -->
                 <li><a href="index.html#inicio">Inicio</a></li>
                 <li><a href="index.html#servicios">Servicios</a></li>
                 <li>
@@ -114,7 +112,7 @@
     <div class="tienda-container">
         <h2 class="section-title">Soluciones y Licencias</h2>
         <div class="grid-productos" id="contenedor-productos">
-            <!-- Los productos se cargarán aquí con JavaScript -->
+            <!-- Los productos se cargarán aquí automáticamente desde Firebase -->
         </div>
     </div>
 
@@ -142,63 +140,92 @@
         </div>
     </div>
 
-    <script>
-        // ==========================================
-        // 1. CONFIGURACIÓN DE TASA BCV
-        // ==========================================
-        // ¡ACTUALIZA ESTE NÚMERO CADA DÍA!
-        const tasaBCV = 36.65; 
-        document.getElementById('display-tasa').innerText = tasaBCV.toFixed(2);
+    <!-- CONEXIÓN Y LÓGICA CON FIREBASE (TYPE="MODULE") -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // ==========================================
-        // 2. BASE DE DATOS DE PRODUCTOS
+        // 1. CONFIGURACIÓN DE FIREBASE
         // ==========================================
-        // Puedes agregar más productos copiando el formato.
-        const productos = [
-            { id: 1, nombre: "Licencia Windows Server 2022", precioUSD: 120, img: "Windows Server" },
-            { id: 2, nombre: "Router Empresarial Gigabit", precioUSD: 85, img: "Hardware Redes" },
-            { id: 3, nombre: "Disco Duro NAS 4TB", precioUSD: 150, img: "Almacenamiento Cloud" },
-            { id: 4, nombre: "Mantenimiento Preventivo (Básico)", precioUSD: 30, img: "Soporte Técnico" },
-            { id: 5, nombre: "Licencia Antivirus Corporativo (Anual)", precioUSD: 45, img: "Ciberseguridad" },
-            { id: 6, nombre: "Instalación de Punto de Red", precioUSD: 25, img: "Cableado Estructurado" }
-        ];
+        const firebaseConfig = {
+            apiKey: "AIzaSyAzda7DDpa4QooWBHWpSXZpMN0oPDXZUEo",
+            authDomain: "tecnosoftwaretienda.firebaseapp.com",
+            projectId: "tecnosoftwaretienda",
+            storageBucket: "tecnosoftwaretienda.firebasestorage.app",
+            messagingSenderId: "367617419083",
+            appId: "1:367617419083:web:93ad27ea5db146f046eace",
+            measurementId: "G-VS7RFYPVEC"
+        };
 
-        let carrito = [];
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
         // ==========================================
-        // 3. RENDERIZAR PRODUCTOS
+        // 2. CONFIGURACIÓN DE TASA BCV Y VARIABLES
         // ==========================================
+        window.tasaBCV = 36.65; // <-- ¡ACTUALIZA ESTE NÚMERO CADA DÍA!
+        document.getElementById('display-tasa').innerText = window.tasaBCV.toFixed(2);
+
+        window.carrito = [];
+        window.productos = []; 
+
         const contenedorProductos = document.getElementById('contenedor-productos');
-        
-        function cargarProductos() {
-            productos.forEach(producto => {
-                const precioVES = (producto.precioUSD * tasaBCV).toFixed(2);
-                const tarjeta = document.createElement('div');
-                tarjeta.className = 'producto-card';
+
+        // ==========================================
+        // 3. DESCARGAR Y RENDERIZAR PRODUCTOS
+        // ==========================================
+        async function cargarProductos() {
+            contenedorProductos.innerHTML = "<p style='text-align:center; width:100%;'>Cargando catálogo desde la base de datos...</p>";
+            
+            try {
+                const querySnapshot = await getDocs(collection(db, "productos"));
+                contenedorProductos.innerHTML = "";
                 
-                // Nota: Si quieres usar imágenes reales, cambia ${producto.img} por <img src="ruta-de-imagen.jpg">
-                tarjeta.innerHTML = `
-                    <div>
-                        <div class="producto-img">${producto.img}</div>
-                        <h3>${producto.nombre}</h3>
-                        <div class="precio-usd">$${producto.precioUSD.toFixed(2)}</div>
-                        <div class="precio-ves">Ref: ${precioVES} Bs.</div>
-                    </div>
-                    <button class="btn-agregar" onclick="agregarAlCarrito(${producto.id}, event)">Agregar al Carrito</button>
-                `;
-                contenedorProductos.appendChild(tarjeta);
-            });
+                if (querySnapshot.empty) {
+                    contenedorProductos.innerHTML = "<p style='text-align:center; width:100%;'>Aún no hay productos. Ve a admin.html para agregar uno.</p>";
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const producto = doc.data();
+                    producto.id = doc.id; 
+                    window.productos.push(producto);
+
+                    const precioVES = (producto.precioUSD * window.tasaBCV).toFixed(2);
+                    const tarjeta = document.createElement('div');
+                    tarjeta.className = 'producto-card';
+                    
+                    // Si insertaste una URL de imagen, la muestra; si no, deja el bloque vacío
+                    let imagenHTML = producto.imgUrl 
+                        ? `<img src="${producto.imgUrl}" alt="${producto.nombre}" style="width:100%; height:100%; object-fit:cover;">`
+                        : "Sin imagen";
+
+                    tarjeta.innerHTML = `
+                        <div>
+                            <div class="producto-img">${imagenHTML}</div>
+                            <h3>${producto.nombre}</h3>
+                            <div class="precio-usd">$${producto.precioUSD.toFixed(2)}</div>
+                            <div class="precio-ves">Ref: ${precioVES} Bs.</div>
+                        </div>
+                        <button class="btn-agregar" onclick="window.agregarAlCarrito('${producto.id}', event)">Agregar al Carrito</button>
+                    `;
+                    contenedorProductos.appendChild(tarjeta);
+                });
+            } catch (error) {
+                console.error("Error al obtener productos:", error);
+                contenedorProductos.innerHTML = "<p style='text-align:center; color:red;'>No se pudieron cargar los productos. Revisa tu conexión a Firebase.</p>";
+            }
         }
 
         // ==========================================
         // 4. LÓGICA DEL CARRITO
         // ==========================================
-        function agregarAlCarrito(id, event) {
-            const producto = productos.find(p => p.id === id);
-            carrito.push(producto);
+        window.agregarAlCarrito = function(id, event) {
+            const producto = window.productos.find(p => p.id === id);
+            window.carrito.push(producto);
             actualizarInterfazCarrito();
             
-            // Efecto visual al agregar en el botón
             const btn = event.target;
             btn.innerText = "¡Agregado!";
             btn.style.backgroundColor = "var(--azul-primario)";
@@ -210,16 +237,16 @@
             }, 1000);
         }
 
-        function eliminarDelCarrito(index) {
-            carrito.splice(index, 1);
+        window.eliminarDelCarrito = function(index) {
+            window.carrito.splice(index, 1);
             actualizarInterfazCarrito();
         }
 
-        function actualizarInterfazCarrito() {
-            document.getElementById('contador').innerText = carrito.length;
+        window.actualizarInterfazCarrito = function() {
+            document.getElementById('contador').innerText = window.carrito.length;
             const lista = document.getElementById('lista-carrito');
             
-            if (carrito.length === 0) {
+            if (window.carrito.length === 0) {
                 lista.innerHTML = '<p style="text-align:center; color:#999; margin-top:20px;">El carrito está vacío</p>';
                 document.getElementById('total-usd').innerText = "$0.00";
                 document.getElementById('total-ves').innerText = "Ref: 0.00 Bs.";
@@ -229,7 +256,7 @@
             lista.innerHTML = '';
             let totalUSD = 0;
 
-            carrito.forEach((item, index) => {
+            window.carrito.forEach((item, index) => {
                 totalUSD += item.precioUSD;
                 lista.innerHTML += `
                     <div class="item-carrito">
@@ -237,58 +264,47 @@
                             <h4>${item.nombre}</h4>
                             <span>$${item.precioUSD.toFixed(2)}</span>
                         </div>
-                        <button class="btn-eliminar" onclick="eliminarDelCarrito(${index})">Quitar</button>
+                        <button class="btn-eliminar" onclick="window.eliminarDelCarrito(${index})">Quitar</button>
                     </div>
                 `;
             });
 
-            // Actualizar totales abajo
             document.getElementById('total-usd').innerText = `$${totalUSD.toFixed(2)}`;
-            document.getElementById('total-ves').innerText = `Ref: ${(totalUSD * tasaBCV).toFixed(2)} Bs.`;
+            document.getElementById('total-ves').innerText = `Ref: ${(totalUSD * window.tasaBCV).toFixed(2)} Bs.`;
         }
 
         // ==========================================
         // 5. MANEJO DE LA INTERFAZ Y WHATSAPP
         // ==========================================
-        function toggleCarrito() {
+        window.toggleCarrito = function() {
             document.getElementById('carrito-panel').classList.toggle('abierto');
             document.getElementById('overlay').classList.toggle('activo');
         }
 
-        function procesarCompra() {
-            if(carrito.length === 0) {
+        window.procesarCompra = function() {
+            if(window.carrito.length === 0) {
                 alert("Tu carrito está vacío. Agrega algunos productos primero.");
                 return;
             }
 
-            // Armamos el mensaje para WhatsApp
             let mensaje = "¡Hola! Vengo de la tienda web y me gustaría procesar el siguiente pedido:\n\n";
             let totalUSD = 0;
 
-            // Recorremos el carrito para hacer la lista
-            carrito.forEach((item) => {
+            window.carrito.forEach((item) => {
                 mensaje += `▪️ ${item.nombre} ($${item.precioUSD.toFixed(2)})\n`;
                 totalUSD += item.precioUSD;
             });
 
-            // Calculamos el total en Bolívares
-            let totalVES = (totalUSD * tasaBCV).toFixed(2);
-            
-            // Agregamos los totales al final
+            let totalVES = (totalUSD * window.tasaBCV).toFixed(2);
             mensaje += `\n*Total a pagar:* $${totalUSD.toFixed(2)} (Ref: ${totalVES} Bs.)\n\n`;
             mensaje += "¿Cuáles son los métodos de pago disponibles?";
 
-            // Formato para URL de WhatsApp
             let textoCodificado = encodeURIComponent(mensaje);
-            
-            // Número de WhatsApp corporativo de TecnoSoftware Solutions
             let numeroWhatsApp = "584124755775"; 
-            
-            // Abrimos WhatsApp en nueva pestaña
             window.open(`https://wa.me/${numeroWhatsApp}?text=${textoCodificado}`, '_blank');
         }
 
-        // Iniciar la tienda al cargar la página
+        // Iniciar la descarga de productos al cargar la página
         cargarProductos();
     </script>
 </body>
