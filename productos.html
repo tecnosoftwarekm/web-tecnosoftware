@@ -6,7 +6,7 @@
     <title>Productos - TecnoSoftware Solutions</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
-        /* Reutilizamos tus variables base */
+        /* Variables y Estilos Base de TecnoSoftware Solutions */
         :root {
             --azul-primario: #2D7DEB;
             --azul-oscuro: #1A4A8D;
@@ -46,7 +46,8 @@
         .producto-card { background: var(--blanco); border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; display: flex; flex-direction: column; justify-content: space-between;}
         .producto-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         
-        .producto-img { width: 100%; height: 200px; background-color: #e9ecef; border-radius: 4px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.9rem; }
+        .producto-img { width: 100%; height: 200px; background-color: #e9ecef; border-radius: 4px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.9rem; overflow: hidden; }
+        .producto-img img { width: 100%; height: 100%; object-fit: cover; }
         .producto-card h3 { color: var(--azul-oscuro); font-size: 1.2rem; margin-bottom: 10px; }
         .precio-usd { font-size: 1.4rem; font-weight: bold; color: var(--azul-primario); }
         .precio-ves { font-size: 0.9rem; color: var(--texto-claro); margin-bottom: 15px; }
@@ -72,11 +73,18 @@
         .carrito-footer { padding: 20px; background: #f8f9fa; border-top: 1px solid #ddd; }
         .total-fila { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
         .total-ves { font-size: 0.9rem; color: var(--texto-claro); text-align: right; margin-bottom: 15px; }
-        .btn-procesar { background: var(--azul-primario); color: var(--blanco); border: none; width: 100%; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-procesar { background: var(--azul-primario); color: var(--blanco); border: none; width: 100%; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+        .btn-procesar:hover { background: var(--azul-oscuro); }
         
         /* Fondo oscuro al abrir el carrito */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
         .overlay.activo { display: block; }
+        
+        /* Responsividad básica */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .panel-carrito { width: 100%; right: -100%; }
+        }
     </style>
 </head>
 <body>
@@ -86,11 +94,12 @@
 
     <header>
         <div class="logo-container">
+            <!-- Asegúrate de tener el logo en la misma carpeta o ajustar la ruta -->
             <img src="logo-tecno-sinfondo.png" alt="TecnoSoftware Solutions Logo">
         </div>
         <nav>
             <ul>
-                <!-- Nota: Redirigimos a index.html para volver a la página principal -->
+                <!-- Redirigimos a index.html para volver a la página principal -->
                 <li><a href="index.html#inicio">Inicio</a></li>
                 <li><a href="index.html#servicios">Servicios</a></li>
                 <li>
@@ -103,7 +112,7 @@
     </header>
 
     <div class="tienda-container">
-        <h2 class="section-title">Nuestros Productos</h2>
+        <h2 class="section-title">Soluciones y Licencias</h2>
         <div class="grid-productos" id="contenedor-productos">
             <!-- Los productos se cargarán aquí con JavaScript -->
         </div>
@@ -128,26 +137,37 @@
                 <span id="total-usd">$0.00</span>
             </div>
             <div class="total-ves" id="total-ves">Ref: 0.00 Bs.</div>
-            <button class="btn-procesar" onclick="procesarCompra()">Procesar Pedido</button>
+            <!-- Botón conectado a WhatsApp -->
+            <button class="btn-procesar" onclick="procesarCompra()">Enviar pedido por WhatsApp</button>
         </div>
     </div>
 
     <script>
-        // 1. Tasa del BCV (En un entorno real sin backend, esto se actualiza manualmente cada día)
+        // ==========================================
+        // 1. CONFIGURACIÓN DE TASA BCV
+        // ==========================================
+        // ¡ACTUALIZA ESTE NÚMERO CADA DÍA!
         const tasaBCV = 36.65; 
         document.getElementById('display-tasa').innerText = tasaBCV.toFixed(2);
 
-        // 2. Base de datos de productos (Puedes agregar más aquí)
+        // ==========================================
+        // 2. BASE DE DATOS DE PRODUCTOS
+        // ==========================================
+        // Puedes agregar más productos copiando el formato.
         const productos = [
-            { id: 1, nombre: "Licencia Windows Server 2022", precioUSD: 120, img: "Imagen del Software" },
-            { id: 2, nombre: "Router Empresarial Gigabit", precioUSD: 85, img: "Imagen del Router" },
-            { id: 3, nombre: "Disco Duro NAS 4TB", precioUSD: 150, img: "Imagen del Disco" },
-            { id: 4, nombre: "Mantenimiento Preventivo (Básico)", precioUSD: 30, img: "Imagen del Servicio" }
+            { id: 1, nombre: "Licencia Windows Server 2022", precioUSD: 120, img: "Windows Server" },
+            { id: 2, nombre: "Router Empresarial Gigabit", precioUSD: 85, img: "Hardware Redes" },
+            { id: 3, nombre: "Disco Duro NAS 4TB", precioUSD: 150, img: "Almacenamiento Cloud" },
+            { id: 4, nombre: "Mantenimiento Preventivo (Básico)", precioUSD: 30, img: "Soporte Técnico" },
+            { id: 5, nombre: "Licencia Antivirus Corporativo (Anual)", precioUSD: 45, img: "Ciberseguridad" },
+            { id: 6, nombre: "Instalación de Punto de Red", precioUSD: 25, img: "Cableado Estructurado" }
         ];
 
         let carrito = [];
 
-        // 3. Renderizar los productos en la página
+        // ==========================================
+        // 3. RENDERIZAR PRODUCTOS
+        // ==========================================
         const contenedorProductos = document.getElementById('contenedor-productos');
         
         function cargarProductos() {
@@ -155,6 +175,8 @@
                 const precioVES = (producto.precioUSD * tasaBCV).toFixed(2);
                 const tarjeta = document.createElement('div');
                 tarjeta.className = 'producto-card';
+                
+                // Nota: Si quieres usar imágenes reales, cambia ${producto.img} por <img src="ruta-de-imagen.jpg">
                 tarjeta.innerHTML = `
                     <div>
                         <div class="producto-img">${producto.img}</div>
@@ -162,19 +184,21 @@
                         <div class="precio-usd">$${producto.precioUSD.toFixed(2)}</div>
                         <div class="precio-ves">Ref: ${precioVES} Bs.</div>
                     </div>
-                    <button class="btn-agregar" onclick="agregarAlCarrito(${producto.id})">Agregar al Carrito</button>
+                    <button class="btn-agregar" onclick="agregarAlCarrito(${producto.id}, event)">Agregar al Carrito</button>
                 `;
                 contenedorProductos.appendChild(tarjeta);
             });
         }
 
-        // 4. Lógica del Carrito
-        function agregarAlCarrito(id) {
+        // ==========================================
+        // 4. LÓGICA DEL CARRITO
+        // ==========================================
+        function agregarAlCarrito(id, event) {
             const producto = productos.find(p => p.id === id);
             carrito.push(producto);
             actualizarInterfazCarrito();
             
-            // Efecto visual al agregar
+            // Efecto visual al agregar en el botón
             const btn = event.target;
             btn.innerText = "¡Agregado!";
             btn.style.backgroundColor = "var(--azul-primario)";
@@ -218,22 +242,53 @@
                 `;
             });
 
+            // Actualizar totales abajo
             document.getElementById('total-usd').innerText = `$${totalUSD.toFixed(2)}`;
             document.getElementById('total-ves').innerText = `Ref: ${(totalUSD * tasaBCV).toFixed(2)} Bs.`;
         }
 
-        // 5. Manejo del panel lateral
+        // ==========================================
+        // 5. MANEJO DE LA INTERFAZ Y WHATSAPP
+        // ==========================================
         function toggleCarrito() {
             document.getElementById('carrito-panel').classList.toggle('abierto');
             document.getElementById('overlay').classList.toggle('activo');
         }
 
         function procesarCompra() {
-            if(carrito.length === 0) return alert("Tu carrito está vacío.");
-            alert("¡Redirigiendo al pago! (Aquí puedes conectar con un formulario o WhatsApp)");
+            if(carrito.length === 0) {
+                alert("Tu carrito está vacío. Agrega algunos productos primero.");
+                return;
+            }
+
+            // Armamos el mensaje para WhatsApp
+            let mensaje = "¡Hola! Vengo de la tienda web y me gustaría procesar el siguiente pedido:\n\n";
+            let totalUSD = 0;
+
+            // Recorremos el carrito para hacer la lista
+            carrito.forEach((item) => {
+                mensaje += `▪️ ${item.nombre} ($${item.precioUSD.toFixed(2)})\n`;
+                totalUSD += item.precioUSD;
+            });
+
+            // Calculamos el total en Bolívares
+            let totalVES = (totalUSD * tasaBCV).toFixed(2);
+            
+            // Agregamos los totales al final
+            mensaje += `\n*Total a pagar:* $${totalUSD.toFixed(2)} (Ref: ${totalVES} Bs.)\n\n`;
+            mensaje += "¿Cuáles son los métodos de pago disponibles?";
+
+            // Formato para URL de WhatsApp
+            let textoCodificado = encodeURIComponent(mensaje);
+            
+            // Número de WhatsApp corporativo de TecnoSoftware Solutions
+            let numeroWhatsApp = "584124755775"; 
+            
+            // Abrimos WhatsApp en nueva pestaña
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${textoCodificado}`, '_blank');
         }
 
-        // Iniciar
+        // Iniciar la tienda al cargar la página
         cargarProductos();
     </script>
 </body>
