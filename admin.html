@@ -67,8 +67,9 @@
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
+        // ¡LLAVE NUEVA ACTUALIZADA!
         const firebaseConfig = {
-            apiKey: "AIzaSyAzda7DDpa4QooWBHWpSXZpMN0oPDXZUEo",
+            apiKey: "AIzaSyAH5XGtcwOwVjSiBtfV7ZutShgKMCl9O-I",
             authDomain: "tecnosoftwaretienda.firebaseapp.com",
             projectId: "tecnosoftwaretienda",
             storageBucket: "tecnosoftwaretienda.firebasestorage.app",
@@ -112,6 +113,7 @@
                 await signInWithEmailAndPassword(auth, email, password);
                 msjLogin.innerText = "";
             } catch (error) {
+                console.error("Error de Firebase:", error);
                 msjLogin.innerText = "Correo o contraseña incorrectos.";
                 btnLogin.innerText = "Entrar";
                 btnLogin.disabled = false;
