@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - TecnoSoftware</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #F4F7F6; padding: 40px; color: #333; }
+        .admin-container { background: #fff; max-width: 500px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #1A4A8D; text-align: center; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #2D7DEB; color: white; border: none; padding: 12px; width: 100%; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;}
+        button:hover { background-color: #1A4A8D; }
+        #mensaje { text-align: center; margin-top: 15px; font-weight: bold; color: green; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-container">
+        <h2>Subir Nuevo Producto</h2>
+        <form id="form-producto">
+            <div class="form-group">
+                <label>Nombre del Producto</label>
+                <input type="text" id="nombre" placeholder="Ej. Servidor NAS" required>
+            </div>
+            <div class="form-group">
+                <label>Precio (USD)</label>
+                <input type="number" id="precio" step="0.01" placeholder="Ej. 150" required>
+            </div>
+            <div class="form-group">
+                <label>Enlace de la Imagen (URL)</label>
+                <input type="text" id="imagenUrl" placeholder="https://tudominio.com/foto.jpg" required>
+            </div>
+            <button type="submit" id="btn-guardar">Guardar Producto</button>
+            <div id="mensaje"></div>
+        </form>
+    </div>
+
+    <!-- Módulos de Firebase V10 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Tu configuración real sacada de tu captura
+        const firebaseConfig = {
+            apiKey: "AIzaSyAzda7DDpa4QooWBHWpSXZpMN0oPDXZUEo",
+            authDomain: "tecnosoftwaretienda.firebaseapp.com",
+            projectId: "tecnosoftwaretienda",
+            storageBucket: "tecnosoftwaretienda.firebasestorage.app",
+            messagingSenderId: "367617419083",
+            appId: "1:367617419083:web:93ad27ea5db146f046eace",
+            measurementId: "G-VS7RFYPVEC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.getElementById('form-producto').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-guardar');
+            const mensaje = document.getElementById('mensaje');
+            btn.innerText = "Guardando en base de datos...";
+            btn.disabled = true;
+
+            const nombre = document.getElementById('nombre').value;
+            const precio = parseFloat(document.getElementById('precio').value);
+            const imagenUrl = document.getElementById('imagenUrl').value;
+
+            try {
+                // Guardar datos en Firestore directamente
+                await addDoc(collection(db, "productos"), {
+                    nombre: nombre,
+                    precioUSD: precio,
+                    imgUrl: imagenUrl
+                });
+
+                mensaje.innerText = "¡Producto guardado con éxito!";
+                document.getElementById('form-producto').reset();
+            } catch (error) {
+                console.error(error);
+                mensaje.innerText = "Hubo un error al guardar. Revisa la consola.";
+                mensaje.style.color = "red";
+            }
+
+            btn.innerText = "Guardar Producto";
+            btn.disabled = false;
+        });
+    </script>
+</body>
+</html>
