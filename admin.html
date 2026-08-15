@@ -10,15 +10,36 @@
         h2 { color: #1A4A8D; text-align: center; margin-bottom: 20px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         button { background-color: #2D7DEB; color: white; border: none; padding: 12px; width: 100%; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;}
         button:hover { background-color: #1A4A8D; }
-        #mensaje { text-align: center; margin-top: 15px; font-weight: bold; color: green; }
+        .btn-rojo { background-color: #dc3545; margin-top: 30px; }
+        .btn-rojo:hover { background-color: #a71d2a; }
+        #mensaje, #login-mensaje { text-align: center; margin-top: 15px; font-weight: bold; }
+        .oculto { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="admin-container">
+    <!-- PANTALLA DE LOGIN -->
+    <div class="admin-container" id="pantalla-login">
+        <h2>Acceso Administrativo</h2>
+        <form id="form-login">
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" id="btn-login">Entrar</button>
+            <div id="login-mensaje" style="color: red;"></div>
+        </form>
+    </div>
+
+    <!-- PANTALLA DEL FORMULARIO DE PRODUCTOS (Oculta por defecto) -->
+    <div class="admin-container oculto" id="pantalla-admin">
         <h2>Subir Nuevo Producto</h2>
         <form id="form-producto">
             <div class="form-group">
@@ -36,14 +57,16 @@
             <button type="submit" id="btn-guardar">Guardar Producto</button>
             <div id="mensaje"></div>
         </form>
+
+        <button class="btn-rojo" id="btn-cerrar-sesion">Cerrar Sesión</button>
     </div>
 
-    <!-- Módulos de Firebase V10 -->
+    <!-- Módulos de Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        // Tu configuración real sacada de tu captura
         const firebaseConfig = {
             apiKey: "AIzaSyAzda7DDpa4QooWBHWpSXZpMN0oPDXZUEo",
             authDomain: "tecnosoftwaretienda.firebaseapp.com",
@@ -56,12 +79,56 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
+        const pantallaLogin = document.getElementById('pantalla-login');
+        const pantallaAdmin = document.getElementById('pantalla-admin');
+
+        // Escuchar si hay alguien con sesión iniciada
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario logueado: Muestra formulario, oculta login
+                pantallaLogin.classList.add('oculto');
+                pantallaAdmin.classList.remove('oculto');
+            } else {
+                // No hay usuario: Muestra login, oculta formulario
+                pantallaLogin.classList.remove('oculto');
+                pantallaAdmin.classList.add('oculto');
+            }
+        });
+
+        // Lógica de Inicio de Sesión
+        document.getElementById('form-login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btnLogin = document.getElementById('btn-login');
+            const msjLogin = document.getElementById('login-mensaje');
+
+            btnLogin.innerText = "Verificando...";
+            btnLogin.disabled = true;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                msjLogin.innerText = "";
+            } catch (error) {
+                msjLogin.innerText = "Correo o contraseña incorrectos.";
+                btnLogin.innerText = "Entrar";
+                btnLogin.disabled = false;
+            }
+        });
+
+        // Lógica de Cerrar Sesión
+        document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Lógica de Guardar Producto
         document.getElementById('form-producto').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-guardar');
             const mensaje = document.getElementById('mensaje');
-            btn.innerText = "Guardando en base de datos...";
+            btn.innerText = "Guardando...";
             btn.disabled = true;
 
             const nombre = document.getElementById('nombre').value;
@@ -69,7 +136,6 @@
             const imagenUrl = document.getElementById('imagenUrl').value;
 
             try {
-                // Guardar datos en Firestore directamente
                 await addDoc(collection(db, "productos"), {
                     nombre: nombre,
                     precioUSD: precio,
@@ -77,10 +143,11 @@
                 });
 
                 mensaje.innerText = "¡Producto guardado con éxito!";
+                mensaje.style.color = "green";
                 document.getElementById('form-producto').reset();
             } catch (error) {
                 console.error(error);
-                mensaje.innerText = "Hubo un error al guardar. Revisa la consola.";
+                mensaje.innerText = "Error al guardar. Revisa la consola.";
                 mensaje.style.color = "red";
             }
 
