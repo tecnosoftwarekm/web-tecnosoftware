@@ -28,6 +28,10 @@
         /* --- NAVEGACIÓN Y TASA BCV TOP --- */
         header { position: fixed; top: 0; left: 0; width: 100%; height: 80px; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.08); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 50px; }
         .logo-container img { height: 50px; }
+        
+        /* TÍTULO EN EL HEADER */
+        .header-title { position: absolute; left: 50%; transform: translateX(-50%); font-size: 1.4rem; color: var(--azul-oscuro); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin: 0; }
+
         nav ul { display: flex; list-style: none; gap: 25px; align-items: center; }
         nav ul li a { text-decoration: none; color: var(--texto-oscuro); font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease; }
         nav ul li a:hover { color: var(--azul-primario); }
@@ -41,9 +45,8 @@
         .tasa-bcv-banner span { color: #4ade80; }
 
         /* --- LAYOUT DE LA TIENDA CON SIDEBAR --- */
-        .tienda-container { max-width: 1300px; margin: 150px auto 40px auto; padding: 0 20px; }
-        .section-title { text-align: center; font-size: 2.2rem; color: var(--azul-oscuro); margin-bottom: 40px; position: relative; }
-        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background-color: var(--azul-primario); margin: 10px auto 0 auto; border-radius: 2px; }
+        /* Reducido el margin-top para que todo suba y se vea de inmediato */
+        .tienda-container { max-width: 1300px; margin: 140px auto 40px auto; padding: 0 20px; }
 
         .layout-tienda { display: flex; gap: 30px; align-items: flex-start; }
 
@@ -112,6 +115,7 @@
         
         /* Responsividad básica */
         @media (max-width: 900px) {
+            .header-title { display: none; } /* Oculta el título en móviles para que no choque con el menú */
             .layout-tienda { flex-direction: column; }
             .sidebar { width: 100%; position: static; padding: 15px; margin-bottom: 20px; }
             .filtro-lista { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -133,6 +137,10 @@
         <div class="logo-container">
             <img src="logo-tecno-sinfondo.png" alt="TecnoSoftware Solutions Logo">
         </div>
+        
+        <!-- NUEVO TÍTULO EN EL HEADER -->
+        <h1 class="header-title">Equipos y Licencias</h1>
+
         <nav>
             <ul>
                 <li><a href="index.html#inicio">Inicio</a></li>
@@ -146,13 +154,12 @@
         </nav>
     </header>
 
-    <!-- La tasa BCV ahora está aquí arriba, justa debajo del menú -->
     <div class="tasa-bcv-banner">
         Tasa de Cambio Oficial BCV: <span id="display-tasa">Cargando...</span> Bs.
     </div>
 
     <div class="tienda-container">
-        <h2 class="section-title">Equipos y Licencias</h2>
+        <!-- TÍTULO GRANDE ELIMINADO DE AQUÍ -->
         
         <div class="layout-tienda">
             <!-- BARRA LATERAL: SÓLO FILTROS DE CATEGORÍAS -->
