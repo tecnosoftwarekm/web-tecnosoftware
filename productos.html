@@ -25,7 +25,7 @@
             overflow-x: hidden; 
         }
 
-        /* --- NAVEGACIÓN Y TASA BCV TOP --- */
+        /* --- NAVEGACIÓN --- */
         header { position: fixed; top: 0; left: 0; width: 100%; height: 80px; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 10px rgba(0,0,0,0.08); z-index: 1000; display: flex; justify-content: space-between; align-items: center; padding: 0 50px; }
         .logo-container img { height: 50px; }
         
@@ -40,18 +40,14 @@
         .btn-carrito:hover { background-color: #1557c0; }
         .contador-carrito { background: var(--blanco); color: var(--azul-primario); padding: 2px 6px; border-radius: 50%; font-size: 0.8rem; }
 
-        /* Franja BCV Fija bajo el Header */
-        .tasa-bcv-banner { position: fixed; top: 80px; left: 0; width: 100%; background-color: var(--azul-oscuro); color: var(--blanco); text-align: center; padding: 10px; font-weight: bold; z-index: 990; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .tasa-bcv-banner span { color: #4ade80; }
-
         /* --- LAYOUT DE LA TIENDA CON SIDEBAR --- */
-        /* Reducido el margin-top para que todo suba y se vea de inmediato */
-        .tienda-container { max-width: 1300px; margin: 140px auto 40px auto; padding: 0 20px; }
+        /* Ajustado el margen ya que quitamos la franja azul del BCV */
+        .tienda-container { max-width: 1300px; margin: 110px auto 40px auto; padding: 0 20px; }
 
         .layout-tienda { display: flex; gap: 30px; align-items: flex-start; }
 
         /* --- BARRA LATERAL (FILTROS DE CATEGORÍA) --- */
-        .sidebar { width: 250px; flex-shrink: 0; background: var(--blanco); padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: sticky; top: 140px; }
+        .sidebar { width: 250px; flex-shrink: 0; background: var(--blanco); padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: sticky; top: 110px; }
         .sidebar h3 { color: var(--azul-oscuro); font-size: 1.1rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
         
         .filtro-lista { list-style: none; }
@@ -84,8 +80,7 @@
         .producto-card h3 { color: var(--azul-oscuro); font-size: 1.2rem; margin-bottom: 5px; }
         .producto-desc { font-size: 0.85rem; color: var(--texto-claro); margin-bottom: 15px; line-height: 1.4; min-height: 40px; }
         
-        .precio-usd { font-size: 1.4rem; font-weight: bold; color: var(--azul-primario); }
-        .precio-ves { font-size: 0.9rem; color: var(--texto-claro); margin-bottom: 15px; }
+        .precio-usd { font-size: 1.4rem; font-weight: bold; color: var(--azul-primario); margin-bottom: 15px; }
         
         .btn-agregar { background-color: transparent; color: var(--azul-primario); border: 1px solid var(--azul-primario); padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; }
         .btn-agregar:hover { background-color: var(--azul-primario); color: var(--blanco); }
@@ -105,8 +100,7 @@
         .btn-eliminar { color: #dc3545; background: none; border: none; cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
         
         .carrito-footer { padding: 20px; background: #f8f9fa; border-top: 1px solid #ddd; }
-        .total-fila { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
-        .total-ves { font-size: 0.9rem; color: var(--texto-claro); text-align: right; margin-bottom: 15px; }
+        .total-fila { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
         .btn-procesar { background: var(--azul-primario); color: var(--blanco); border: none; width: 100%; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
         .btn-procesar:hover { background: var(--azul-oscuro); }
         
@@ -115,7 +109,7 @@
         
         /* Responsividad básica */
         @media (max-width: 900px) {
-            .header-title { display: none; } /* Oculta el título en móviles para que no choque con el menú */
+            .header-title { display: none; } 
             .layout-tienda { flex-direction: column; }
             .sidebar { width: 100%; position: static; padding: 15px; margin-bottom: 20px; }
             .filtro-lista { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -123,7 +117,6 @@
         }
         @media (max-width: 768px) {
             header { height: auto; padding: 15px 20px; flex-direction: column; gap: 15px; position: relative; }
-            .tasa-bcv-banner { position: relative; top: 0; }
             .tienda-container { margin-top: 40px; }
             .panel-carrito { width: 100%; right: -100%; }
         }
@@ -138,7 +131,7 @@
             <img src="logo-tecno-sinfondo.png" alt="TecnoSoftware Solutions Logo">
         </div>
         
-        <!-- NUEVO TÍTULO EN EL HEADER -->
+        <!-- TÍTULO EN EL HEADER -->
         <h1 class="header-title">Equipos y Licencias</h1>
 
         <nav>
@@ -154,13 +147,7 @@
         </nav>
     </header>
 
-    <div class="tasa-bcv-banner">
-        Tasa de Cambio Oficial BCV: <span id="display-tasa">Cargando...</span> Bs.
-    </div>
-
     <div class="tienda-container">
-        <!-- TÍTULO GRANDE ELIMINADO DE AQUÍ -->
-        
         <div class="layout-tienda">
             <!-- BARRA LATERAL: SÓLO FILTROS DE CATEGORÍAS -->
             <aside class="sidebar">
@@ -202,7 +189,6 @@
                 <span>Total:</span>
                 <span id="total-usd">$0.00</span>
             </div>
-            <div class="total-ves" id="total-ves">Ref: 0.00 Bs.</div>
             <button class="btn-procesar" onclick="procesarCompra()">Enviar pedido por WhatsApp</button>
         </div>
     </div>
@@ -210,7 +196,7 @@
     <!-- CONEXIÓN Y LÓGICA CON FIREBASE (TYPE="MODULE") -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAH5XGtcwOwVjSiBtfV7ZutShgKMCl9O-I",
@@ -226,7 +212,6 @@
         const db = getFirestore(app);
 
         // Variables Globales
-        window.tasaBCV = 36.65; 
         window.carrito = [];
         window.productosGuardados = []; 
         let categoriaActual = 'Todas';
@@ -239,15 +224,6 @@
         // ==========================================
         async function inicializarTienda() {
             contenedorProductos.innerHTML = "<p style='text-align:center; width:100%;'>Cargando catálogo...</p>";
-            
-            try {
-                const configSnap = await getDoc(doc(db, "configuracion", "valores"));
-                if (configSnap.exists() && configSnap.data().tasaBCV) {
-                    window.tasaBCV = configSnap.data().tasaBCV;
-                }
-            } catch (error) {}
-            
-            document.getElementById('display-tasa').innerText = window.tasaBCV.toFixed(2);
             
             try {
                 const querySnapshot = await getDocs(collection(db, "productos"));
@@ -282,7 +258,6 @@
             }
 
             productosFiltrados.forEach((producto) => {
-                const precioVES = (producto.precioUSD * window.tasaBCV).toFixed(2);
                 const tarjeta = document.createElement('div');
                 tarjeta.className = 'producto-card';
                 
@@ -308,7 +283,6 @@
                         <h3>${producto.nombre}</h3>
                         ${descHTML}
                         <div class="precio-usd">$${producto.precioUSD.toFixed(2)}</div>
-                        <div class="precio-ves">Ref: ${precioVES} Bs.</div>
                     </div>
                     <button class="btn-agregar" onclick="window.agregarAlCarrito('${producto.id}', event)">Agregar al Carrito</button>
                 `;
@@ -362,7 +336,6 @@
             if (window.carrito.length === 0) {
                 lista.innerHTML = '<p style="text-align:center; color:#999; margin-top:20px;">El carrito está vacío</p>';
                 document.getElementById('total-usd').innerText = "$0.00";
-                document.getElementById('total-ves').innerText = "Ref: 0.00 Bs.";
                 return;
             }
 
@@ -386,7 +359,6 @@
             });
 
             document.getElementById('total-usd').innerText = `$${totalUSD.toFixed(2)}`;
-            document.getElementById('total-ves').innerText = `Ref: ${(totalUSD * window.tasaBCV).toFixed(2)} Bs.`;
         }
 
         // ==========================================
@@ -412,8 +384,7 @@
                 totalUSD += item.precioUSD;
             });
 
-            let totalVES = (totalUSD * window.tasaBCV).toFixed(2);
-            mensaje += `\n*Total a pagar:* $${totalUSD.toFixed(2)} (Ref: ${totalVES} Bs.)\n\n`;
+            mensaje += `\n*Total a pagar:* $${totalUSD.toFixed(2)}\n\n`;
             mensaje += "¿Cuáles son los métodos de pago disponibles?";
 
             let textoCodificado = encodeURIComponent(mensaje);
