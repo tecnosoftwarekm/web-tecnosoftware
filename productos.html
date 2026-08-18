@@ -152,7 +152,8 @@
     <!-- CONEXIÓN Y LÓGICA CON FIREBASE (TYPE="MODULE") -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // IMPORTANTE: Se importó getDoc y doc
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // ==========================================
         // 1. CONFIGURACIÓN DE FIREBASE
@@ -170,23 +171,40 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // ==========================================
-        // 2. CONFIGURACIÓN DE TASA BCV Y VARIABLES
-        // ==========================================
-        window.tasaBCV = 36.65; // <-- ¡ACTUALIZA ESTE NÚMERO CADA DÍA!
-        document.getElementById('display-tasa').innerText = window.tasaBCV.toFixed(2);
-
+        // Variables globales
+        window.tasaBCV = 36.65; // Valor por si falla la conexión
         window.carrito = [];
         window.productos = []; 
 
         const contenedorProductos = document.getElementById('contenedor-productos');
 
         // ==========================================
+        // 2. INICIALIZAR TIENDA (LEER TASA Y LUEGO PRODUCTOS)
+        // ==========================================
+        async function inicializarTienda() {
+            contenedorProductos.innerHTML = "<p style='text-align:center; width:100%;'>Cargando catálogo...</p>";
+            
+            // A. Buscar la Tasa BCV dinámica en la base de datos
+            try {
+                const configSnap = await getDoc(doc(db, "configuracion", "valores"));
+                if (configSnap.exists() && configSnap.data().tasaBCV) {
+                    window.tasaBCV = configSnap.data().tasaBCV;
+                }
+            } catch (error) {
+                console.error("No se pudo cargar la tasa dinámica. Se usará la de respaldo.", error);
+            }
+            
+            // Imprimir la tasa en el Footer
+            document.getElementById('display-tasa').innerText = window.tasaBCV.toFixed(2);
+            
+            // B. Ahora sí, cargar los productos
+            cargarProductos();
+        }
+
+        // ==========================================
         // 3. DESCARGAR Y RENDERIZAR PRODUCTOS
         // ==========================================
         async function cargarProductos() {
-            contenedorProductos.innerHTML = "<p style='text-align:center; width:100%;'>Cargando catálogo desde la base de datos...</p>";
-            
             try {
                 const querySnapshot = await getDocs(collection(db, "productos"));
                 contenedorProductos.innerHTML = "";
@@ -196,9 +214,9 @@
                     return;
                 }
 
-                querySnapshot.forEach((doc) => {
-                    const producto = doc.data();
-                    producto.id = doc.id; 
+                querySnapshot.forEach((docSnap) => {
+                    const producto = docSnap.data();
+                    producto.id = docSnap.id; 
                     window.productos.push(producto);
 
                     const precioVES = (producto.precioUSD * window.tasaBCV).toFixed(2);
@@ -209,7 +227,6 @@
                         ? `<img src="${producto.imgUrl}" alt="${producto.nombre}" style="width:100%; height:100%; object-fit:cover;">`
                         : "Sin imagen";
 
-                    // LOGICA DE LA ETIQUETA DE CONDICIÓN
                     let condicionHTML = '';
                     if(producto.condicion) {
                         let claseColor = 'condicion-default';
@@ -314,7 +331,6 @@
             let totalUSD = 0;
 
             window.carrito.forEach((item) => {
-                // Agregar la condición al texto del WhatsApp
                 let txtCondicion = item.condicion ? ` (${item.condicion})` : '';
                 mensaje += `▪️ ${item.nombre}${txtCondicion} - $${item.precioUSD.toFixed(2)}\n`;
                 totalUSD += item.precioUSD;
@@ -329,8 +345,8 @@
             window.open(`https://wa.me/${numeroWhatsApp}?text=${textoCodificado}`, '_blank');
         }
 
-        // Iniciar la descarga de productos al cargar la página
-        cargarProductos();
+        // Arrancamos todo
+        inicializarTienda();
     </script>
 </body>
 </html>
