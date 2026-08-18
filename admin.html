@@ -30,11 +30,6 @@
         #mensaje, #login-mensaje { text-align: center; margin-top: 15px; font-weight: bold; }
         .oculto { display: none !important; }
         hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
-        
-        /* Flex para la fila de la tasa */
-        .fila-tasa { display: flex; gap: 15px; align-items: flex-end; justify-content: center; }
-        .fila-tasa .form-group { margin-bottom: 0; width: 200px; }
-        .fila-tasa button { width: auto; margin-top: 0; padding: 10px 20px; }
     </style>
 </head>
 <body>
@@ -56,19 +51,6 @@
         </form>
     </div>
 
-    <!-- PANEL DE CONFIGURACIÓN DE TASA BCV -->
-    <div class="admin-container oculto" id="pantalla-config">
-        <h2 style="margin-bottom: 15px;">Actualizar Tasa BCV</h2>
-        <div class="fila-tasa">
-            <div class="form-group">
-                <label>Tasa Actual (Bs.)</label>
-                <input type="number" id="input-tasa" step="0.001" placeholder="Cargando...">
-            </div>
-            <button type="button" id="btn-actualizar-tasa">Actualizar Sistema</button>
-        </div>
-        <div id="msj-tasa" style="text-align: center; margin-top: 10px; font-weight: bold;"></div>
-    </div>
-
     <!-- PANTALLA DEL FORMULARIO Y TABLA DE PRODUCTOS -->
     <div class="admin-container oculto" id="pantalla-admin">
         <h2 id="titulo-formulario">Subir Nuevo Producto</h2>
@@ -79,7 +61,6 @@
                     <label>Nombre del Producto</label>
                     <input type="text" id="nombre" placeholder="Ej. Servidor NAS" required>
                 </div>
-                <!-- CAMPO DE DESCRIPCIÓN AÑADIDO -->
                 <div class="form-group full-width">
                     <label>Breve Descripción (Características)</label>
                     <input type="text" id="descripcion" placeholder="Ej. i5 12va, 16GB RAM, RTX 3070, 500GB SSD...">
@@ -141,7 +122,7 @@
     <!-- Módulos de Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -160,7 +141,6 @@
 
         const pantallaLogin = document.getElementById('pantalla-login');
         const pantallaAdmin = document.getElementById('pantalla-admin');
-        const pantallaConfig = document.getElementById('pantalla-config');
         
         let productoEditandoId = null;
 
@@ -170,13 +150,10 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 pantallaLogin.classList.add('oculto');
-                pantallaConfig.classList.remove('oculto');
                 pantallaAdmin.classList.remove('oculto');
-                cargarTasaActual(); // Carga la tasa
-                cargarListaProductos(); // Carga los productos
+                cargarListaProductos(); 
             } else {
                 pantallaLogin.classList.remove('oculto');
-                pantallaConfig.classList.add('oculto');
                 pantallaAdmin.classList.add('oculto');
             }
         });
@@ -200,48 +177,6 @@
         });
 
         document.getElementById('btn-cerrar-sesion').addEventListener('click', () => signOut(auth));
-
-        // =====================================
-        // LÓGICA DE TASA BCV
-        // =====================================
-        async function cargarTasaActual() {
-            try {
-                const docSnap = await getDoc(doc(db, "configuracion", "valores"));
-                if (docSnap.exists()) {
-                    document.getElementById('input-tasa').value = docSnap.data().tasaBCV;
-                }
-            } catch (error) {
-                console.error("Error al cargar la tasa:", error);
-            }
-        }
-
-        document.getElementById('btn-actualizar-tasa').addEventListener('click', async () => {
-            const nuevaTasa = parseFloat(document.getElementById('input-tasa').value);
-            const msj = document.getElementById('msj-tasa');
-            const btn = document.getElementById('btn-actualizar-tasa');
-
-            if(!nuevaTasa || nuevaTasa <= 0) {
-                msj.innerText = "Ingresa un valor válido.";
-                msj.style.color = "red";
-                return;
-            }
-
-            btn.innerText = "Actualizando...";
-            btn.disabled = true;
-
-            try {
-                await setDoc(doc(db, "configuracion", "valores"), { tasaBCV: nuevaTasa });
-                msj.innerText = "¡Tasa actualizada con éxito en toda la tienda!";
-                msj.style.color = "green";
-                setTimeout(() => msj.innerText = "", 4000);
-            } catch(e) {
-                console.error(e);
-                msj.innerText = "Error al actualizar la tasa.";
-                msj.style.color = "red";
-            }
-            btn.innerText = "Actualizar Sistema";
-            btn.disabled = false;
-        });
 
         // =====================================
         // LÓGICA DE PRODUCTOS
@@ -291,7 +226,7 @@
 
             const datosProducto = {
                 nombre: document.getElementById('nombre').value,
-                descripcion: document.getElementById('descripcion').value, // GUARDAR DESCRIPCIÓN
+                descripcion: document.getElementById('descripcion').value,
                 precioUSD: parseFloat(document.getElementById('precio').value),
                 categoria: document.getElementById('categoria').value, 
                 condicion: document.getElementById('condicion').value,
@@ -325,7 +260,7 @@
             productoEditandoId = id;
             document.getElementById('titulo-formulario').innerText = "Editando Producto";
             document.getElementById('nombre').value = nombre;
-            document.getElementById('descripcion').value = descripcion || ''; // LLENAR DESCRIPCIÓN
+            document.getElementById('descripcion').value = descripcion || ''; 
             document.getElementById('precio').value = precio;
             document.getElementById('categoria').value = categoria; 
             if(condicion && condicion !== 'undefined') document.getElementById('condicion').value = condicion;
