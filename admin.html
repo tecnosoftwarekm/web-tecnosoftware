@@ -79,11 +79,15 @@
                     <label>Nombre del Producto</label>
                     <input type="text" id="nombre" placeholder="Ej. Servidor NAS" required>
                 </div>
+                <!-- CAMPO DE DESCRIPCIÓN AÑADIDO -->
+                <div class="form-group full-width">
+                    <label>Breve Descripción (Características)</label>
+                    <input type="text" id="descripcion" placeholder="Ej. i5 12va, 16GB RAM, RTX 3070, 500GB SSD...">
+                </div>
                 <div class="form-group">
                     <label>Precio (USD)</label>
                     <input type="number" id="precio" step="0.01" placeholder="Ej. 150" required>
                 </div>
-                <!-- CAMPO DE CATEGORÍA AÑADIDO -->
                 <div class="form-group">
                     <label>Categoría</label>
                     <select id="categoria" required>
@@ -121,7 +125,7 @@
                     <tr>
                         <th>Producto</th>
                         <th>Precio</th>
-                        <th>Categoría</th> <!-- COLUMNA AÑADIDA -->
+                        <th>Categoría</th>
                         <th>Condición</th>
                         <th>Acciones</th>
                     </tr>
@@ -137,7 +141,6 @@
     <!-- Módulos de Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        // IMPORTANTE: Se agregaron setDoc y getDoc
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
@@ -227,7 +230,6 @@
             btn.disabled = true;
 
             try {
-                // Guarda la tasa en una colección separada llamada "configuracion"
                 await setDoc(doc(db, "configuracion", "valores"), { tasaBCV: nuevaTasa });
                 msj.innerText = "¡Tasa actualizada con éxito en toda la tienda!";
                 msj.style.color = "green";
@@ -261,15 +263,15 @@
                     const p = docSnap.data();
                     const tr = document.createElement('tr');
                     const nombreSeguro = p.nombre.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const descSegura = (p.descripcion || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     
                     tr.innerHTML = `
                         <td style="font-weight: 500; color: #1A4A8D;">${p.nombre}</td>
                         <td style="font-weight: bold;">$${p.precioUSD.toFixed(2)}</td>
-                        <td>${p.categoria || 'Otros'}</td> <!-- MOSTRAR CATEGORIA -->
+                        <td>${p.categoria || 'Otros'}</td>
                         <td>${p.condicion || 'N/A'}</td>
                         <td>
-                            <!-- PASAR CATEGORIA EN LA FUNCION EDITAR -->
-                            <button class="btn-accion btn-editar" onclick="window.prepararEdicion('${docSnap.id}', '${nombreSeguro}', ${p.precioUSD}, '${p.categoria || 'Otros'}', '${p.condicion}', '${p.imgUrl}')">Editar</button>
+                            <button class="btn-accion btn-editar" onclick="window.prepararEdicion('${docSnap.id}', '${nombreSeguro}', ${p.precioUSD}, '${p.categoria || 'Otros'}', '${p.condicion}', '${p.imgUrl}', '${descSegura}')">Editar</button>
                             <button class="btn-accion btn-eliminar" onclick="window.eliminarProducto('${docSnap.id}')">Borrar</button>
                         </td>
                     `;
@@ -289,8 +291,9 @@
 
             const datosProducto = {
                 nombre: document.getElementById('nombre').value,
+                descripcion: document.getElementById('descripcion').value, // GUARDAR DESCRIPCIÓN
                 precioUSD: parseFloat(document.getElementById('precio').value),
-                categoria: document.getElementById('categoria').value, // GUARDAR CATEGORIA
+                categoria: document.getElementById('categoria').value, 
                 condicion: document.getElementById('condicion').value,
                 imgUrl: document.getElementById('imagenUrl').value
             };
@@ -318,12 +321,13 @@
             if(!productoEditandoId) btn.innerText = "Guardar Producto";
         });
 
-        window.prepararEdicion = function(id, nombre, precio, categoria, condicion, imgUrl) {
+        window.prepararEdicion = function(id, nombre, precio, categoria, condicion, imgUrl, descripcion) {
             productoEditandoId = id;
             document.getElementById('titulo-formulario').innerText = "Editando Producto";
             document.getElementById('nombre').value = nombre;
+            document.getElementById('descripcion').value = descripcion || ''; // LLENAR DESCRIPCIÓN
             document.getElementById('precio').value = precio;
-            document.getElementById('categoria').value = categoria; // LLENAR CATEGORIA
+            document.getElementById('categoria').value = categoria; 
             if(condicion && condicion !== 'undefined') document.getElementById('condicion').value = condicion;
             document.getElementById('imagenUrl').value = imgUrl;
             
