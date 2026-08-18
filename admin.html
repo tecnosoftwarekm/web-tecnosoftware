@@ -6,27 +6,19 @@
     <title>Panel de Administración - TecnoSoftware</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #F4F7F6; padding: 40px; color: #333; }
-        
-        /* Contenedor más ancho para acomodar la tabla */
-        .admin-container { background: #fff; max-width: 800px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .admin-container { background: #fff; max-width: 800px; margin: 0 auto 20px auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         h2 { color: #1A4A8D; text-align: center; margin-bottom: 20px; }
-        
-        /* Estilos del formulario */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group { margin-bottom: 15px; }
         .form-group.full-width { grid-column: span 2; }
         label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
         input[type="text"], input[type="number"], input[type="email"], input[type="password"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        
-        /* Botones */
         button { background-color: #2D7DEB; color: white; border: none; padding: 12px; width: 100%; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.3s;}
         button:hover { background-color: #1A4A8D; }
         .btn-rojo { background-color: #dc3545; margin-top: 30px; }
         .btn-rojo:hover { background-color: #a71d2a; }
         .btn-gris { background-color: #6c757d; }
         .btn-gris:hover { background-color: #5a6268; }
-        
-        /* Estilos de la Tabla */
         .tabla-container { margin-top: 30px; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
@@ -35,10 +27,14 @@
         .btn-editar { background-color: #f59e0b; }
         .btn-editar:hover { background-color: #d97706; }
         .btn-eliminar { background-color: #dc3545; }
-        
         #mensaje, #login-mensaje { text-align: center; margin-top: 15px; font-weight: bold; }
         .oculto { display: none !important; }
         hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
+        
+        /* Flex para la fila de la tasa */
+        .fila-tasa { display: flex; gap: 15px; align-items: flex-end; justify-content: center; }
+        .fila-tasa .form-group { margin-bottom: 0; width: 200px; }
+        .fila-tasa button { width: auto; margin-top: 0; padding: 10px 20px; }
     </style>
 </head>
 <body>
@@ -58,6 +54,19 @@
             <button type="submit" id="btn-login">Entrar</button>
             <div id="login-mensaje" style="color: red;"></div>
         </form>
+    </div>
+
+    <!-- PANEL DE CONFIGURACIÓN DE TASA BCV -->
+    <div class="admin-container oculto" id="pantalla-config">
+        <h2 style="margin-bottom: 15px;">Actualizar Tasa BCV</h2>
+        <div class="fila-tasa">
+            <div class="form-group">
+                <label>Tasa Actual (Bs.)</label>
+                <input type="number" id="input-tasa" step="0.001" placeholder="Cargando...">
+            </div>
+            <button type="button" id="btn-actualizar-tasa">Actualizar Sistema</button>
+        </div>
+        <div id="msj-tasa" style="text-align: center; margin-top: 10px; font-weight: bold;"></div>
     </div>
 
     <!-- PANTALLA DEL FORMULARIO Y TABLA DE PRODUCTOS -->
@@ -95,7 +104,6 @@
 
         <hr>
 
-        <!-- SECCIÓN DE LA TABLA DE PRODUCTOS -->
         <h2>Inventario Actual</h2>
         <div class="tabla-container">
             <table>
@@ -108,7 +116,6 @@
                     </tr>
                 </thead>
                 <tbody id="cuerpo-tabla">
-                    <!-- JavaScript cargará los productos aquí -->
                 </tbody>
             </table>
         </div>
@@ -119,8 +126,8 @@
     <!-- Módulos de Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        // IMPORTANTE: Se agregaron getDocs, deleteDoc, doc, updateDoc
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // IMPORTANTE: Se agregaron setDoc y getDoc
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
@@ -139,8 +146,9 @@
 
         const pantallaLogin = document.getElementById('pantalla-login');
         const pantallaAdmin = document.getElementById('pantalla-admin');
+        const pantallaConfig = document.getElementById('pantalla-config');
         
-        let productoEditandoId = null; // Variable para saber si estamos editando o creando
+        let productoEditandoId = null;
 
         // =====================================
         // AUTENTICACIÓN
@@ -148,10 +156,13 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 pantallaLogin.classList.add('oculto');
+                pantallaConfig.classList.remove('oculto');
                 pantallaAdmin.classList.remove('oculto');
-                cargarListaProductos(); // Cargar la tabla al iniciar sesión
+                cargarTasaActual(); // Carga la tasa
+                cargarListaProductos(); // Carga los productos
             } else {
                 pantallaLogin.classList.remove('oculto');
+                pantallaConfig.classList.add('oculto');
                 pantallaAdmin.classList.add('oculto');
             }
         });
@@ -161,31 +172,67 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const btnLogin = document.getElementById('btn-login');
-            const msjLogin = document.getElementById('login-mensaje');
-
             btnLogin.innerText = "Verificando...";
             btnLogin.disabled = true;
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                msjLogin.innerText = "";
+                document.getElementById('login-mensaje').innerText = "";
             } catch (error) {
-                console.error("Error de Firebase:", error);
-                msjLogin.innerText = "Correo o contraseña incorrectos.";
+                document.getElementById('login-mensaje').innerText = "Correo o contraseña incorrectos.";
                 btnLogin.innerText = "Entrar";
                 btnLogin.disabled = false;
             }
         });
 
-        document.getElementById('btn-cerrar-sesion').addEventListener('click', () => {
-            signOut(auth);
+        document.getElementById('btn-cerrar-sesion').addEventListener('click', () => signOut(auth));
+
+        // =====================================
+        // LÓGICA DE TASA BCV
+        // =====================================
+        async function cargarTasaActual() {
+            try {
+                const docSnap = await getDoc(doc(db, "configuracion", "valores"));
+                if (docSnap.exists()) {
+                    document.getElementById('input-tasa').value = docSnap.data().tasaBCV;
+                }
+            } catch (error) {
+                console.error("Error al cargar la tasa:", error);
+            }
+        }
+
+        document.getElementById('btn-actualizar-tasa').addEventListener('click', async () => {
+            const nuevaTasa = parseFloat(document.getElementById('input-tasa').value);
+            const msj = document.getElementById('msj-tasa');
+            const btn = document.getElementById('btn-actualizar-tasa');
+
+            if(!nuevaTasa || nuevaTasa <= 0) {
+                msj.innerText = "Ingresa un valor válido.";
+                msj.style.color = "red";
+                return;
+            }
+
+            btn.innerText = "Actualizando...";
+            btn.disabled = true;
+
+            try {
+                // Guarda la tasa en una colección separada llamada "configuracion"
+                await setDoc(doc(db, "configuracion", "valores"), { tasaBCV: nuevaTasa });
+                msj.innerText = "¡Tasa actualizada con éxito en toda la tienda!";
+                msj.style.color = "green";
+                setTimeout(() => msj.innerText = "", 4000);
+            } catch(e) {
+                console.error(e);
+                msj.innerText = "Error al actualizar la tasa.";
+                msj.style.color = "red";
+            }
+            btn.innerText = "Actualizar Sistema";
+            btn.disabled = false;
         });
 
         // =====================================
-        // CRUD (CREAR, LEER, ACTUALIZAR, BORRAR)
+        // LÓGICA DE PRODUCTOS (IDÉNTICO AL ANTERIOR)
         // =====================================
-        
-        // 1. LEER PRODUCTOS (Llenar la tabla)
         window.cargarListaProductos = async function() {
             const tbody = document.getElementById('cuerpo-tabla');
             tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Cargando inventario...</td></tr>';
@@ -202,8 +249,6 @@
                 querySnapshot.forEach((docSnap) => {
                     const p = docSnap.data();
                     const tr = document.createElement('tr');
-                    
-                    // Escapar comillas en el nombre para evitar errores de JS al editar
                     const nombreSeguro = p.nombre.replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     
                     tr.innerHTML = `
@@ -218,12 +263,10 @@
                     tbody.appendChild(tr);
                 });
             } catch (error) {
-                console.error("Error cargando tabla:", error);
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Error al cargar los datos.</td></tr>';
             }
         };
 
-        // 2. CREAR O ACTUALIZAR PRODUCTO
         document.getElementById('form-producto').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-guardar');
@@ -240,83 +283,62 @@
 
             try {
                 if (productoEditandoId) {
-                    // MODO EDICIÓN
                     await updateDoc(doc(db, "productos", productoEditandoId), datosProducto);
                     mensaje.innerText = "¡Producto actualizado correctamente!";
-                    window.cancelarEdicion(); // Resetear el formulario
+                    window.cancelarEdicion(); 
                 } else {
-                    // MODO CREACIÓN
                     await addDoc(collection(db, "productos"), datosProducto);
                     mensaje.innerText = "¡Producto guardado con éxito!";
                     document.getElementById('form-producto').reset();
                 }
                 
                 mensaje.style.color = "green";
-                cargarListaProductos(); // Refrescar la tabla
-                
-                // Ocultar mensaje después de 3 segundos
+                cargarListaProductos(); 
                 setTimeout(() => mensaje.innerText = "", 3000);
 
             } catch (error) {
-                console.error(error);
                 mensaje.innerText = "Error al guardar. Revisa la consola.";
                 mensaje.style.color = "red";
             }
-
             btn.disabled = false;
             if(!productoEditandoId) btn.innerText = "Guardar Producto";
         });
 
-        // 3. PREPARAR EDICIÓN (Llenar formulario con datos)
         window.prepararEdicion = function(id, nombre, precio, condicion, imgUrl) {
             productoEditandoId = id;
-            
             document.getElementById('titulo-formulario').innerText = "Editando Producto";
             document.getElementById('nombre').value = nombre;
             document.getElementById('precio').value = precio;
-            
-            if(condicion && condicion !== 'undefined') {
-                document.getElementById('condicion').value = condicion;
-            }
-            
+            if(condicion && condicion !== 'undefined') document.getElementById('condicion').value = condicion;
             document.getElementById('imagenUrl').value = imgUrl;
             
             const btnGuardar = document.getElementById('btn-guardar');
             btnGuardar.innerText = "Actualizar Producto";
-            btnGuardar.style.backgroundColor = "#f59e0b"; // Botón naranja
-            
+            btnGuardar.style.backgroundColor = "#f59e0b"; 
             document.getElementById('btn-cancelar').classList.remove('oculto');
-            
-            // Subir la vista arriba del todo suavemente
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // 4. CANCELAR EDICIÓN
         window.cancelarEdicion = function() {
             productoEditandoId = null;
             document.getElementById('form-producto').reset();
             document.getElementById('titulo-formulario').innerText = "Subir Nuevo Producto";
-            
             const btnGuardar = document.getElementById('btn-guardar');
             btnGuardar.innerText = "Guardar Producto";
-            btnGuardar.style.backgroundColor = "#2D7DEB"; // Botón azul original
-            
+            btnGuardar.style.backgroundColor = "#2D7DEB"; 
             document.getElementById('btn-cancelar').classList.add('oculto');
         };
 
-        // 5. BORRAR PRODUCTO
         window.eliminarProducto = async function(id) {
             if (confirm("¿Estás seguro de que deseas eliminar este producto definitivamente?")) {
                 try {
                     await deleteDoc(doc(db, "productos", id));
-                    cargarListaProductos(); // Refrescar tabla
+                    cargarListaProductos();
                 } catch (error) {
-                    console.error("Error eliminando:", error);
                     alert("Ocurrió un error al intentar borrar el producto.");
                 }
             }
         };
-
     </script>
 </body>
 </html>
