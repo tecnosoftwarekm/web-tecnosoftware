@@ -5,71 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - TecnoSoftware</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #F4F7F6; padding: 40px; color: #333; }
-        .admin-container { background: #fff; max-width: 900px; margin: 0 auto 20px auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #1A4A8D; text-align: center; margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #F4F7F6; padding: 20px; color: #333; margin: 0;}
         
-        /* --- NAVEGACIÓN DEL DASHBOARD (TABS) --- */
-        .admin-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
-        .tabs { display: flex; gap: 10px; }
-        .tab-btn { background: #f8f9fa; color: #333; border: 1px solid #ccc; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; margin: 0; width: auto; }
+        /* Contenedor más ajustado */
+        .admin-container { background: #fff; max-width: 850px; margin: 0 auto 20px auto; padding: 20px 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #1A4A8D; text-align: center; margin-bottom: 15px; margin-top: 0; font-size: 1.4rem; }
+        
+        /* --- NAVEGACIÓN DEL DASHBOARD (TABS) COMPACTA --- */
+        .admin-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .tabs { display: flex; gap: 8px; }
+        .tab-btn { background: #f8f9fa; color: #333; border: 1px solid #ccc; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; margin: 0; font-size: 0.85rem; }
         .tab-btn:hover { background: #e2e8f0; }
         .tab-btn.activo { background: #1A4A8D; color: white; border-color: #1A4A8D; }
-        .btn-salir { background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; margin: 0; width: auto; }
+        .btn-salir { background-color: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; margin: 0; font-size: 0.85rem; }
         .btn-salir:hover { background-color: #a71d2a; }
 
-        /* --- FORMULARIO --- */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group.full-width { grid-column: span 2; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
-        input[type="text"], input[type="number"], input[type="email"], input[type="password"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        button.btn-principal { background-color: #2D7DEB; color: white; border: none; padding: 12px; width: 100%; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.3s;}
+        /* --- FORMULARIO COMPACTO (A COLUMNAS) --- */
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .span-1 { grid-column: span 1; }
+        .span-2 { grid-column: span 2; }
+        .span-3 { grid-column: span 3; }
+        
+        .form-group { margin-bottom: 5px; }
+        label { display: block; margin-bottom: 3px; font-weight: bold; font-size: 0.8rem; color: #444; }
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"], select { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; font-size: 0.9rem; }
+        
+        .botones-form { display: flex; gap: 10px; margin-top: 15px; }
+        button.btn-principal { background-color: #2D7DEB; color: white; border: none; padding: 10px; flex: 1; font-size: 0.95rem; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;}
         button.btn-principal:hover { background-color: #1A4A8D; }
         .btn-gris { background-color: #6c757d; }
         .btn-gris:hover { background-color: #5a6268; }
 
-        /* --- INVENTARIO, BUSCADOR Y TABLA --- */
-        .buscador-admin { width: 100%; padding: 12px; border: 2px solid #2D7DEB; border-radius: 4px; font-size: 1rem; margin-bottom: 20px; outline: none; }
+        /* --- INVENTARIO, BUSCADOR Y TABLA COMPACTA --- */
+        .buscador-admin { width: 100%; padding: 10px; border: 2px solid #2D7DEB; border-radius: 4px; font-size: 0.9rem; margin-bottom: 15px; outline: none; }
         .tabla-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #ddd; vertical-align: middle; }
+        table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 0.85rem; }
+        th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #ddd; vertical-align: middle; }
         th { background-color: #f8f9fa; color: #1A4A8D; font-weight: bold; }
         
         /* Botones en línea para las acciones */
         .celda-acciones { white-space: nowrap; }
-        .btn-accion { padding: 6px 10px; font-size: 0.8rem; width: auto; margin: 0 4px 0 0; display: inline-block; cursor: pointer; font-weight: bold; border-radius: 4px; border: none; color: white; }
+        .btn-accion { padding: 5px 8px; font-size: 0.75rem; margin: 0 4px 0 0; display: inline-block; cursor: pointer; font-weight: bold; border-radius: 3px; border: none; color: white; }
         .btn-editar { background-color: #f59e0b; }
         .btn-editar:hover { background-color: #d97706; }
         .btn-eliminar { background-color: #dc3545; }
         .btn-eliminar:hover { background-color: #a71d2a; }
 
         /* --- PAGINACIÓN --- */
-        .paginacion-container { display: flex; justify-content: center; gap: 5px; margin-top: 20px; }
-        .btn-page { background: #f8f9fa; border: 1px solid #ccc; padding: 8px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        .paginacion-container { display: flex; justify-content: center; gap: 5px; margin-top: 15px; }
+        .btn-page { background: #f8f9fa; border: 1px solid #ccc; padding: 6px 10px; cursor: pointer; border-radius: 3px; font-weight: bold; transition: 0.3s; font-size: 0.85rem; }
         .btn-page:hover { background: #e2e8f0; }
         .btn-page.activo { background: #2D7DEB; color: white; border-color: #2D7DEB; }
         .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        #mensaje, #login-mensaje { text-align: center; margin-top: 15px; font-weight: bold; }
+        #mensaje, #login-mensaje { text-align: center; margin-top: 10px; font-weight: bold; font-size: 0.9rem;}
         .oculto { display: none !important; }
     </style>
 </head>
 <body>
 
     <!-- PANTALLA DE LOGIN -->
-    <div class="admin-container" id="pantalla-login" style="max-width: 500px;">
+    <div class="admin-container" id="pantalla-login" style="max-width: 400px; margin-top: 50px;">
         <h2>Acceso Administrativo</h2>
         <form id="form-login">
-            <div class="form-group">
+            <div class="form-group span-3">
                 <label>Correo Electrónico</label>
                 <input type="email" id="email" required>
             </div>
-            <div class="form-group">
+            <div class="form-group span-3" style="margin-top: 10px;">
                 <label>Contraseña</label>
                 <input type="password" id="password" required>
             </div>
-            <button type="submit" class="btn-principal" id="btn-login">Entrar</button>
+            <button type="submit" class="btn-principal" id="btn-login" style="margin-top: 15px;">Entrar</button>
             <div id="login-mensaje" style="color: red;"></div>
         </form>
     </div>
@@ -89,21 +96,22 @@
         <!-- VISTA 1: FORMULARIO -->
         <div id="vista-form">
             <h2 id="titulo-formulario">Subir Nuevo Producto</h2>
+            
             <form id="form-producto">
+                <!-- GRID COMPACTO DE 3 COLUMNAS -->
                 <div class="form-grid">
-                    <div class="form-group full-width">
+                    <!-- Fila 1 -->
+                    <div class="form-group span-2">
                         <label>Nombre del Producto</label>
                         <input type="text" id="nombre" placeholder="Ej. Servidor NAS" required>
                     </div>
-                    <div class="form-group full-width">
-                        <label>Breve Descripción (Características)</label>
-                        <input type="text" id="descripcion" placeholder="Ej. i5 12va, 16GB RAM, RTX 3070, 500GB SSD...">
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group span-1">
                         <label>Precio (USD)</label>
                         <input type="number" id="precio" step="0.01" placeholder="Ej. 150" required>
                     </div>
-                    <div class="form-group">
+                    
+                    <!-- Fila 2 -->
+                    <div class="form-group span-1">
                         <label>Categoría</label>
                         <select id="categoria" required>
                             <option value="Computación">Computación</option>
@@ -112,29 +120,38 @@
                             <option value="Otros">Otros</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Condición del Equipo</label>
+                    <div class="form-group span-1">
+                        <label>Condición</label>
                         <select id="condicion" required>
                             <option value="Nuevo">Nuevo</option>
                             <option value="Usado">Usado</option>
                             <option value="Refurbished">Refurbished</option>
                         </select>
                     </div>
-                    <div class="form-group full-width">
-                        <label>Enlace de la Imagen (URL)</label>
+                    <div class="form-group span-1">
+                        <label>URL de Imagen</label>
                         <input type="text" id="imagenUrl" placeholder="https://i.ibb.co/foto.jpg" required>
+                    </div>
+
+                    <!-- Fila 3 -->
+                    <div class="form-group span-3">
+                        <label>Breve Descripción (Características)</label>
+                        <input type="text" id="descripcion" placeholder="Ej. i5 12va, 16GB RAM, RTX 3070, 500GB SSD...">
                     </div>
                 </div>
                 
-                <button type="submit" class="btn-principal" id="btn-guardar">Guardar Producto</button>
-                <button type="button" id="btn-cancelar" class="btn-principal btn-gris oculto" onclick="cancelarEdicion()">Cancelar Edición</button>
+                <!-- Botones agrupados -->
+                <div class="botones-form">
+                    <button type="submit" class="btn-principal" id="btn-guardar">Guardar Producto</button>
+                    <button type="button" id="btn-cancelar" class="btn-principal btn-gris oculto" onclick="cancelarEdicion()">Cancelar Edición</button>
+                </div>
                 <div id="mensaje"></div>
             </form>
         </div>
 
         <!-- VISTA 2: INVENTARIO, BÚSQUEDA Y TABLA -->
         <div id="vista-inv" class="oculto">
-            <h2>Inventario Actual</h2>
+            <h2 style="margin-bottom: 10px;">Inventario Actual</h2>
             
             <input type="text" id="buscador-admin" class="buscador-admin" placeholder="🔍 Buscar por nombre de producto...">
 
@@ -210,8 +227,7 @@
                 vistaInv.classList.remove('oculto');
                 tabForm.classList.remove('activo');
                 tabInv.classList.add('activo');
-                // Al entrar a inventario, recargar por si hubo cambios
-                descargarInventario();
+                descargarInventario(); // Recargar datos frescos
             }
         };
 
@@ -272,10 +288,9 @@
             }
         }
 
-        // Búsqueda en tiempo real
         document.getElementById('buscador-admin').addEventListener('input', (e) => {
             busquedaTexto = e.target.value.toLowerCase();
-            paginaActual = 1; // Volver a la página 1 al buscar
+            paginaActual = 1; 
             renderizarTabla();
         });
 
@@ -290,21 +305,18 @@
             tbody.innerHTML = '';
             paginacion.innerHTML = '';
 
-            // 1. Filtrar por búsqueda
             const filtrados = inventarioGlobal.filter(p => p.nombre.toLowerCase().includes(busquedaTexto));
 
             if (filtrados.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#666;">No hay productos registrados o encontrados.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#666;">No hay productos encontrados.</td></tr>';
                 return;
             }
 
-            // 2. Calcular Paginación
             const totalPaginas = Math.ceil(filtrados.length / ITEMS_POR_PAGINA);
             const inicio = (paginaActual - 1) * ITEMS_POR_PAGINA;
             const fin = inicio + ITEMS_POR_PAGINA;
             const paginaProductos = filtrados.slice(inicio, fin);
 
-            // 3. Renderizar filas de la página actual
             paginaProductos.forEach(p => {
                 const tr = document.createElement('tr');
                 const nombreSeguro = p.nombre.replace(/'/g, "\\'").replace(/"/g, '&quot;');
@@ -323,9 +335,7 @@
                 tbody.appendChild(tr);
             });
 
-            // 4. Renderizar botones de paginación
             if (totalPaginas > 1) {
-                // Botón Anterior
                 const btnAnt = document.createElement('button');
                 btnAnt.className = 'btn-page';
                 btnAnt.innerText = '«';
@@ -333,7 +343,6 @@
                 btnAnt.onclick = () => cambiarPagina(paginaActual - 1);
                 paginacion.appendChild(btnAnt);
 
-                // Números
                 for (let i = 1; i <= totalPaginas; i++) {
                     const btnNum = document.createElement('button');
                     btnNum.className = `btn-page ${i === paginaActual ? 'activo' : ''}`;
@@ -342,7 +351,6 @@
                     paginacion.appendChild(btnNum);
                 }
 
-                // Botón Siguiente
                 const btnSig = document.createElement('button');
                 btnSig.className = 'btn-page';
                 btnSig.innerText = '»';
@@ -408,7 +416,6 @@
             btnGuardar.style.backgroundColor = "#f59e0b"; 
             document.getElementById('btn-cancelar').classList.remove('oculto');
             
-            // Cambiar automáticamente a la pestaña del formulario
             cambiarVista('form');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
@@ -427,7 +434,6 @@
             if (confirm("¿Estás seguro de que deseas eliminar este producto definitivamente?")) {
                 try {
                     await deleteDoc(doc(db, "productos", id));
-                    // Volver a descargar para actualizar la paginación globalmente
                     descargarInventario();
                 } catch (error) {
                     alert("Ocurrió un error al intentar borrar el producto.");
