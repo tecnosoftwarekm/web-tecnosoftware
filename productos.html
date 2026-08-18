@@ -41,9 +41,7 @@
         .contador-carrito { background: var(--blanco); color: var(--azul-primario); padding: 2px 6px; border-radius: 50%; font-size: 0.8rem; }
 
         /* --- LAYOUT DE LA TIENDA CON SIDEBAR --- */
-        /* Ajustado el margen ya que quitamos la franja azul del BCV */
         .tienda-container { max-width: 1300px; margin: 110px auto 40px auto; padding: 0 20px; }
-
         .layout-tienda { display: flex; gap: 30px; align-items: flex-start; }
 
         /* --- BARRA LATERAL (FILTROS DE CATEGORÍA) --- */
@@ -59,33 +57,42 @@
         .contenido-tienda { flex-grow: 1; }
         
         /* Buscador centrado */
-        .buscador-top { display: flex; justify-content: center; margin-bottom: 30px; }
-        .buscador-input { width: 100%; max-width: 600px; padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 1rem; outline: none; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .buscador-top { display: flex; justify-content: center; margin-bottom: 25px; }
+        .buscador-input { width: 100%; max-width: 600px; padding: 12px 20px; border: 2px solid #e2e8f0; border-radius: 30px; font-size: 0.95rem; outline: none; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
         .buscador-input:focus { border-color: var(--azul-primario); box-shadow: 0 4px 12px rgba(45, 125, 235, 0.15); }
 
-        .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-        .producto-card { background: var(--blanco); border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; display: flex; flex-direction: column; justify-content: space-between;}
+        /* Tarjetas más pequeñas (220px para que quepan 4) */
+        .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        
+        .producto-card { background: var(--blanco); border-radius: 8px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; display: flex; flex-direction: column; justify-content: space-between;}
         .producto-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         
-        .producto-img { width: 100%; height: 200px; background-color: #ffffff; border-radius: 4px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #adb5bd; overflow: hidden; }
+        /* Imagen reducida */
+        .producto-img { width: 100%; height: 160px; background-color: #ffffff; border-radius: 4px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .producto-img img { width: 100%; height: 100%; object-fit: contain; }
         
-        /* ESTILOS DE LA ETIQUETA DE CONDICIÓN */
-        .badge-condicion { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
+        .badge-condicion { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
         .condicion-nuevo { background-color: #d1fae5; color: #065f46; } 
         .condicion-usado { background-color: #fef3c7; color: #92400e; } 
         .condicion-refurbished { background-color: #e0e7ff; color: #3730a3; } 
         .condicion-default { background-color: #f3f4f6; color: #4b5563; } 
 
-        .producto-card h3 { color: var(--azul-oscuro); font-size: 1.2rem; margin-bottom: 5px; }
-        .producto-desc { font-size: 0.85rem; color: var(--texto-claro); margin-bottom: 15px; line-height: 1.4; min-height: 40px; }
+        .producto-card h3 { color: var(--azul-oscuro); font-size: 1.05rem; margin-bottom: 5px; }
+        .producto-desc { font-size: 0.8rem; color: var(--texto-claro); margin-bottom: 12px; line-height: 1.3; min-height: 35px; }
         
-        .precio-usd { font-size: 1.4rem; font-weight: bold; color: var(--azul-primario); margin-bottom: 15px; }
+        .precio-usd { font-size: 1.3rem; font-weight: bold; color: var(--azul-primario); margin-bottom: 12px; }
         
-        .btn-agregar { background-color: transparent; color: var(--azul-primario); border: 1px solid var(--azul-primario); padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; }
+        .btn-agregar { background-color: transparent; color: var(--azul-primario); border: 1px solid var(--azul-primario); padding: 8px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; font-size: 0.9rem;}
         .btn-agregar:hover { background-color: var(--azul-primario); color: var(--blanco); }
 
-        .mensaje-vacio { grid-column: 1 / -1; text-align: center; padding: 50px; font-size: 1.2rem; color: var(--texto-claro); background: var(--blanco); border-radius: 8px; }
+        .mensaje-vacio { grid-column: 1 / -1; text-align: center; padding: 50px; font-size: 1.1rem; color: var(--texto-claro); background: var(--blanco); border-radius: 8px; }
+
+        /* --- PAGINACIÓN DE PRODUCTOS --- */
+        .paginacion-container { display: flex; justify-content: center; gap: 8px; margin-top: 40px; }
+        .btn-page { background: var(--blanco); border: 1px solid #ccc; padding: 8px 14px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; font-size: 0.95rem; color: var(--texto-oscuro); }
+        .btn-page:hover { background: #e2e8f0; }
+        .btn-page.activo { background: var(--azul-primario); color: white; border-color: var(--azul-primario); }
+        .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* --- MODAL / PANEL DEL CARRITO --- */
         .panel-carrito { position: fixed; top: 0; right: -400px; width: 350px; height: 100vh; background: var(--blanco); box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.3s ease; display: flex; flex-direction: column; }
@@ -149,7 +156,7 @@
 
     <div class="tienda-container">
         <div class="layout-tienda">
-            <!-- BARRA LATERAL: SÓLO FILTROS DE CATEGORÍAS -->
+            <!-- BARRA LATERAL -->
             <aside class="sidebar">
                 <h3>Categorías</h3>
                 <ul class="filtro-lista" id="lista-categorias">
@@ -161,16 +168,20 @@
                 </ul>
             </aside>
 
-            <!-- CATÁLOGO PRINCIPAL (BUSCADOR + GRILLA) -->
+            <!-- CATÁLOGO PRINCIPAL -->
             <main class="contenido-tienda">
                 <!-- Buscador centrado -->
                 <div class="buscador-top">
                     <input type="text" id="input-buscador" class="buscador-input" placeholder="🔍 Buscar Producto (Ej. Windows, Combo, Router...)">
                 </div>
 
+                <!-- Grilla de productos -->
                 <div class="grid-productos" id="contenedor-productos">
                     <!-- Los productos se cargarán aquí automáticamente -->
                 </div>
+                
+                <!-- Paginación para la Tienda -->
+                <div class="paginacion-container" id="paginacion-productos"></div>
             </main>
         </div>
     </div>
@@ -211,19 +222,23 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Variables Globales
+        // Variables Globales y Paginación
         window.carrito = [];
         window.productosGuardados = []; 
         let categoriaActual = 'Todas';
         let textoBusqueda = '';
+        
+        let paginaActual = 1;
+        const ITEMS_POR_PAGINA = 8; // Máximo 8 tarjetas por hoja (2 filas de 4)
 
         const contenedorProductos = document.getElementById('contenedor-productos');
+        const paginacionContenedor = document.getElementById('paginacion-productos');
 
         // ==========================================
         // 1. INICIALIZAR TIENDA
         // ==========================================
         async function inicializarTienda() {
-            contenedorProductos.innerHTML = "<p style='text-align:center; width:100%;'>Cargando catálogo...</p>";
+            contenedorProductos.innerHTML = "<p style='text-align:center; width:100%; grid-column: 1/-1;'>Cargando catálogo...</p>";
             
             try {
                 const querySnapshot = await getDocs(collection(db, "productos"));
@@ -235,16 +250,18 @@
                 });
                 renderizarProductos();
             } catch (error) {
-                contenedorProductos.innerHTML = "<p style='text-align:center; color:red;'>No se pudieron cargar los productos.</p>";
+                contenedorProductos.innerHTML = "<p style='text-align:center; color:red; grid-column: 1/-1;'>No se pudieron cargar los productos.</p>";
             }
         }
 
         // ==========================================
-        // 2. RENDERIZAR Y FILTRAR PRODUCTOS
+        // 2. RENDERIZAR, FILTRAR Y PAGINAR
         // ==========================================
         function renderizarProductos() {
             contenedorProductos.innerHTML = "";
+            paginacionContenedor.innerHTML = "";
             
+            // 1. Filtrar por Búsqueda y Categoría
             const productosFiltrados = window.productosGuardados.filter(p => {
                 const coincideTexto = p.nombre.toLowerCase().includes(textoBusqueda.toLowerCase());
                 const catProducto = p.categoria || "Otros"; 
@@ -257,7 +274,14 @@
                 return;
             }
 
-            productosFiltrados.forEach((producto) => {
+            // 2. Calcular Paginación
+            const totalPaginas = Math.ceil(productosFiltrados.length / ITEMS_POR_PAGINA);
+            const inicio = (paginaActual - 1) * ITEMS_POR_PAGINA;
+            const fin = inicio + ITEMS_POR_PAGINA;
+            const paginaProductos = productosFiltrados.slice(inicio, fin);
+
+            // 3. Renderizar las tarjetas
+            paginaProductos.forEach((producto) => {
                 const tarjeta = document.createElement('div');
                 tarjeta.className = 'producto-card';
                 
@@ -288,11 +312,37 @@
                 `;
                 contenedorProductos.appendChild(tarjeta);
             });
+
+            // 4. Renderizar Botones de Páginas
+            if (totalPaginas > 1) {
+                const btnAnt = document.createElement('button');
+                btnAnt.className = 'btn-page';
+                btnAnt.innerText = '« Anterior';
+                btnAnt.disabled = paginaActual === 1;
+                btnAnt.onclick = () => { paginaActual--; renderizarProductos(); window.scrollTo(0,0); };
+                paginacionContenedor.appendChild(btnAnt);
+
+                for (let i = 1; i <= totalPaginas; i++) {
+                    const btnNum = document.createElement('button');
+                    btnNum.className = `btn-page ${i === paginaActual ? 'activo' : ''}`;
+                    btnNum.innerText = i;
+                    btnNum.onclick = () => { paginaActual = i; renderizarProductos(); window.scrollTo(0,0); };
+                    paginacionContenedor.appendChild(btnNum);
+                }
+
+                const btnSig = document.createElement('button');
+                btnSig.className = 'btn-page';
+                btnSig.innerText = 'Siguiente »';
+                btnSig.disabled = paginaActual === totalPaginas;
+                btnSig.onclick = () => { paginaActual++; renderizarProductos(); window.scrollTo(0,0); };
+                paginacionContenedor.appendChild(btnSig);
+            }
         }
 
         // EVENTOS DEL BUSCADOR Y FILTROS
         document.getElementById('input-buscador').addEventListener('input', (e) => {
             textoBusqueda = e.target.value;
+            paginaActual = 1; // Reseteamos a la página 1 al buscar
             renderizarProductos();
         });
 
@@ -301,6 +351,7 @@
                 document.querySelectorAll('.filtro-lista li').forEach(el => el.classList.remove('activo'));
                 e.target.classList.add('activo');
                 categoriaActual = e.target.getAttribute('data-categoria');
+                paginaActual = 1; // Reseteamos a la página 1 al cambiar de categoría
                 renderizarProductos();
             });
         });
