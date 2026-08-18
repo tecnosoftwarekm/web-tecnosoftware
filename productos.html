@@ -46,8 +46,9 @@
         .producto-card { background: var(--blanco); border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; display: flex; flex-direction: column; justify-content: space-between;}
         .producto-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         
-        .producto-img { width: 100%; height: 200px; background-color: #e9ecef; border-radius: 4px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.9rem; overflow: hidden; }
-        .producto-img img { width: 100%; height: 100%; object-fit: cover; }
+        /* SE CORRIGIÓ EL FONDO A BLANCO AQUÍ */
+        .producto-img { width: 100%; height: 200px; background-color: #ffffff; border-radius: 4px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.9rem; overflow: hidden; }
+        .producto-img img { width: 100%; height: 100%; }
         
         /* ESTILOS DE LA ETIQUETA DE CONDICIÓN */
         .badge-condicion { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
@@ -223,8 +224,9 @@
                     const tarjeta = document.createElement('div');
                     tarjeta.className = 'producto-card';
                     
+                    // AQUÍ ESTÁ LA CORRECCIÓN: object-fit: contain;
                     let imagenHTML = producto.imgUrl 
-                        ? `<img src="${producto.imgUrl}" alt="${producto.nombre}" style="width:100%; height:100%; object-fit:cover;">`
+                        ? `<img src="${producto.imgUrl}" alt="${producto.nombre}" style="width:100%; height:100%; object-fit:contain;">`
                         : "Sin imagen";
 
                     let condicionHTML = '';
