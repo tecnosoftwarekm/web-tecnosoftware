@@ -83,6 +83,16 @@
                     <label>Precio (USD)</label>
                     <input type="number" id="precio" step="0.01" placeholder="Ej. 150" required>
                 </div>
+                <!-- CAMPO DE CATEGORÍA AÑADIDO -->
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="categoria" required>
+                        <option value="Computación">Computación</option>
+                        <option value="Licencias">Licencias</option>
+                        <option value="Redes">Redes</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Condición del Equipo</label>
                     <select id="condicion" required>
@@ -111,6 +121,7 @@
                     <tr>
                         <th>Producto</th>
                         <th>Precio</th>
+                        <th>Categoría</th> <!-- COLUMNA AÑADIDA -->
                         <th>Condición</th>
                         <th>Acciones</th>
                     </tr>
@@ -231,18 +242,18 @@
         });
 
         // =====================================
-        // LÓGICA DE PRODUCTOS (IDÉNTICO AL ANTERIOR)
+        // LÓGICA DE PRODUCTOS
         // =====================================
         window.cargarListaProductos = async function() {
             const tbody = document.getElementById('cuerpo-tabla');
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Cargando inventario...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Cargando inventario...</td></tr>';
             
             try {
                 const querySnapshot = await getDocs(collection(db, "productos"));
                 tbody.innerHTML = '';
                 
                 if (querySnapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#666;">No hay productos registrados aún.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#666;">No hay productos registrados aún.</td></tr>';
                     return;
                 }
 
@@ -254,16 +265,18 @@
                     tr.innerHTML = `
                         <td style="font-weight: 500; color: #1A4A8D;">${p.nombre}</td>
                         <td style="font-weight: bold;">$${p.precioUSD.toFixed(2)}</td>
+                        <td>${p.categoria || 'Otros'}</td> <!-- MOSTRAR CATEGORIA -->
                         <td>${p.condicion || 'N/A'}</td>
                         <td>
-                            <button class="btn-accion btn-editar" onclick="window.prepararEdicion('${docSnap.id}', '${nombreSeguro}', ${p.precioUSD}, '${p.condicion}', '${p.imgUrl}')">Editar</button>
+                            <!-- PASAR CATEGORIA EN LA FUNCION EDITAR -->
+                            <button class="btn-accion btn-editar" onclick="window.prepararEdicion('${docSnap.id}', '${nombreSeguro}', ${p.precioUSD}, '${p.categoria || 'Otros'}', '${p.condicion}', '${p.imgUrl}')">Editar</button>
                             <button class="btn-accion btn-eliminar" onclick="window.eliminarProducto('${docSnap.id}')">Borrar</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
             } catch (error) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Error al cargar los datos.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Error al cargar los datos.</td></tr>';
             }
         };
 
@@ -277,6 +290,7 @@
             const datosProducto = {
                 nombre: document.getElementById('nombre').value,
                 precioUSD: parseFloat(document.getElementById('precio').value),
+                categoria: document.getElementById('categoria').value, // GUARDAR CATEGORIA
                 condicion: document.getElementById('condicion').value,
                 imgUrl: document.getElementById('imagenUrl').value
             };
@@ -304,11 +318,12 @@
             if(!productoEditandoId) btn.innerText = "Guardar Producto";
         });
 
-        window.prepararEdicion = function(id, nombre, precio, condicion, imgUrl) {
+        window.prepararEdicion = function(id, nombre, precio, categoria, condicion, imgUrl) {
             productoEditandoId = id;
             document.getElementById('titulo-formulario').innerText = "Editando Producto";
             document.getElementById('nombre').value = nombre;
             document.getElementById('precio').value = precio;
+            document.getElementById('categoria').value = categoria; // LLENAR CATEGORIA
             if(condicion && condicion !== 'undefined') document.getElementById('condicion').value = condicion;
             document.getElementById('imagenUrl').value = imgUrl;
             
