@@ -6,30 +6,53 @@
     <title>Panel de Administración - TecnoSoftware</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #F4F7F6; padding: 40px; color: #333; }
-        .admin-container { background: #fff; max-width: 800px; margin: 0 auto 20px auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .admin-container { background: #fff; max-width: 900px; margin: 0 auto 20px auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         h2 { color: #1A4A8D; text-align: center; margin-bottom: 20px; }
+        
+        /* --- NAVEGACIÓN DEL DASHBOARD (TABS) --- */
+        .admin-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
+        .tabs { display: flex; gap: 10px; }
+        .tab-btn { background: #f8f9fa; color: #333; border: 1px solid #ccc; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; margin: 0; width: auto; }
+        .tab-btn:hover { background: #e2e8f0; }
+        .tab-btn.activo { background: #1A4A8D; color: white; border-color: #1A4A8D; }
+        .btn-salir { background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; margin: 0; width: auto; }
+        .btn-salir:hover { background-color: #a71d2a; }
+
+        /* --- FORMULARIO --- */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group { margin-bottom: 15px; }
         .form-group.full-width { grid-column: span 2; }
         label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
         input[type="text"], input[type="number"], input[type="email"], input[type="password"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        button { background-color: #2D7DEB; color: white; border: none; padding: 12px; width: 100%; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.3s;}
-        button:hover { background-color: #1A4A8D; }
-        .btn-rojo { background-color: #dc3545; margin-top: 30px; }
-        .btn-rojo:hover { background-color: #a71d2a; }
+        button.btn-principal { background-color: #2D7DEB; color: white; border: none; padding: 12px; width: 100%; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.3s;}
+        button.btn-principal:hover { background-color: #1A4A8D; }
         .btn-gris { background-color: #6c757d; }
         .btn-gris:hover { background-color: #5a6268; }
-        .tabla-container { margin-top: 30px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+
+        /* --- INVENTARIO, BUSCADOR Y TABLA --- */
+        .buscador-admin { width: 100%; padding: 12px; border: 2px solid #2D7DEB; border-radius: 4px; font-size: 1rem; margin-bottom: 20px; outline: none; }
+        .tabla-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #ddd; vertical-align: middle; }
         th { background-color: #f8f9fa; color: #1A4A8D; font-weight: bold; }
-        .btn-accion { padding: 6px 12px; font-size: 0.85rem; width: auto; margin-right: 5px; margin-top: 0; display: inline-block; }
+        
+        /* Botones en línea para las acciones */
+        .celda-acciones { white-space: nowrap; }
+        .btn-accion { padding: 6px 10px; font-size: 0.8rem; width: auto; margin: 0 4px 0 0; display: inline-block; cursor: pointer; font-weight: bold; border-radius: 4px; border: none; color: white; }
         .btn-editar { background-color: #f59e0b; }
         .btn-editar:hover { background-color: #d97706; }
         .btn-eliminar { background-color: #dc3545; }
+        .btn-eliminar:hover { background-color: #a71d2a; }
+
+        /* --- PAGINACIÓN --- */
+        .paginacion-container { display: flex; justify-content: center; gap: 5px; margin-top: 20px; }
+        .btn-page { background: #f8f9fa; border: 1px solid #ccc; padding: 8px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        .btn-page:hover { background: #e2e8f0; }
+        .btn-page.activo { background: #2D7DEB; color: white; border-color: #2D7DEB; }
+        .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
+
         #mensaje, #login-mensaje { text-align: center; margin-top: 15px; font-weight: bold; }
         .oculto { display: none !important; }
-        hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
     </style>
 </head>
 <body>
@@ -46,77 +69,95 @@
                 <label>Contraseña</label>
                 <input type="password" id="password" required>
             </div>
-            <button type="submit" id="btn-login">Entrar</button>
+            <button type="submit" class="btn-principal" id="btn-login">Entrar</button>
             <div id="login-mensaje" style="color: red;"></div>
         </form>
     </div>
 
-    <!-- PANTALLA DEL FORMULARIO Y TABLA DE PRODUCTOS -->
+    <!-- DASHBOARD PRINCIPAL -->
     <div class="admin-container oculto" id="pantalla-admin">
-        <h2 id="titulo-formulario">Subir Nuevo Producto</h2>
         
-        <form id="form-producto">
-            <div class="form-grid">
-                <div class="form-group full-width">
-                    <label>Nombre del Producto</label>
-                    <input type="text" id="nombre" placeholder="Ej. Servidor NAS" required>
-                </div>
-                <div class="form-group full-width">
-                    <label>Breve Descripción (Características)</label>
-                    <input type="text" id="descripcion" placeholder="Ej. i5 12va, 16GB RAM, RTX 3070, 500GB SSD...">
-                </div>
-                <div class="form-group">
-                    <label>Precio (USD)</label>
-                    <input type="number" id="precio" step="0.01" placeholder="Ej. 150" required>
-                </div>
-                <div class="form-group">
-                    <label>Categoría</label>
-                    <select id="categoria" required>
-                        <option value="Computación">Computación</option>
-                        <option value="Licencias">Licencias</option>
-                        <option value="Redes">Redes</option>
-                        <option value="Otros">Otros</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Condición del Equipo</label>
-                    <select id="condicion" required>
-                        <option value="Nuevo">Nuevo</option>
-                        <option value="Usado">Usado</option>
-                        <option value="Refurbished">Refurbished</option>
-                    </select>
-                </div>
-                <div class="form-group full-width">
-                    <label>Enlace de la Imagen (URL)</label>
-                    <input type="text" id="imagenUrl" placeholder="https://i.ibb.co/foto.jpg" required>
-                </div>
+        <!-- Menú Superior (Tabs) -->
+        <div class="admin-nav">
+            <div class="tabs">
+                <button class="tab-btn activo" id="tab-form" onclick="cambiarVista('form')">Subir / Editar Producto</button>
+                <button class="tab-btn" id="tab-inv" onclick="cambiarVista('inv')">Gestión de Inventario</button>
             </div>
-            
-            <button type="submit" id="btn-guardar">Guardar Producto</button>
-            <button type="button" id="btn-cancelar" class="btn-gris oculto" onclick="cancelarEdicion()">Cancelar Edición</button>
-            <div id="mensaje"></div>
-        </form>
-
-        <hr>
-
-        <h2>Inventario Actual</h2>
-        <div class="tabla-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Categoría</th>
-                        <th>Condición</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="cuerpo-tabla">
-                </tbody>
-            </table>
+            <button class="btn-salir" id="btn-cerrar-sesion">Cerrar Sesión</button>
         </div>
 
-        <button class="btn-rojo" id="btn-cerrar-sesion">Cerrar Sesión</button>
+        <!-- VISTA 1: FORMULARIO -->
+        <div id="vista-form">
+            <h2 id="titulo-formulario">Subir Nuevo Producto</h2>
+            <form id="form-producto">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Nombre del Producto</label>
+                        <input type="text" id="nombre" placeholder="Ej. Servidor NAS" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Breve Descripción (Características)</label>
+                        <input type="text" id="descripcion" placeholder="Ej. i5 12va, 16GB RAM, RTX 3070, 500GB SSD...">
+                    </div>
+                    <div class="form-group">
+                        <label>Precio (USD)</label>
+                        <input type="number" id="precio" step="0.01" placeholder="Ej. 150" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="categoria" required>
+                            <option value="Computación">Computación</option>
+                            <option value="Licencias">Licencias</option>
+                            <option value="Redes">Redes</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Condición del Equipo</label>
+                        <select id="condicion" required>
+                            <option value="Nuevo">Nuevo</option>
+                            <option value="Usado">Usado</option>
+                            <option value="Refurbished">Refurbished</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Enlace de la Imagen (URL)</label>
+                        <input type="text" id="imagenUrl" placeholder="https://i.ibb.co/foto.jpg" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-principal" id="btn-guardar">Guardar Producto</button>
+                <button type="button" id="btn-cancelar" class="btn-principal btn-gris oculto" onclick="cancelarEdicion()">Cancelar Edición</button>
+                <div id="mensaje"></div>
+            </form>
+        </div>
+
+        <!-- VISTA 2: INVENTARIO, BÚSQUEDA Y TABLA -->
+        <div id="vista-inv" class="oculto">
+            <h2>Inventario Actual</h2>
+            
+            <input type="text" id="buscador-admin" class="buscador-admin" placeholder="🔍 Buscar por nombre de producto...">
+
+            <div class="tabla-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Categoría</th>
+                            <th>Condición</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Contenedor de Paginación -->
+            <div class="paginacion-container" id="paginacion"></div>
+        </div>
+
     </div>
 
     <!-- Módulos de Firebase -->
@@ -144,6 +185,36 @@
         
         let productoEditandoId = null;
 
+        // --- VARIABLES DE PAGINACIÓN Y BÚSQUEDA ---
+        let inventarioGlobal = [];
+        let paginaActual = 1;
+        const ITEMS_POR_PAGINA = 5;
+        let busquedaTexto = "";
+
+        // =====================================
+        // CONTROL DE VISTAS (TABS)
+        // =====================================
+        window.cambiarVista = function(vista) {
+            const vistaForm = document.getElementById('vista-form');
+            const vistaInv = document.getElementById('vista-inv');
+            const tabForm = document.getElementById('tab-form');
+            const tabInv = document.getElementById('tab-inv');
+
+            if(vista === 'form') {
+                vistaForm.classList.remove('oculto');
+                vistaInv.classList.add('oculto');
+                tabForm.classList.add('activo');
+                tabInv.classList.remove('activo');
+            } else {
+                vistaForm.classList.add('oculto');
+                vistaInv.classList.remove('oculto');
+                tabForm.classList.remove('activo');
+                tabInv.classList.add('activo');
+                // Al entrar a inventario, recargar por si hubo cambios
+                descargarInventario();
+            }
+        };
+
         // =====================================
         // AUTENTICACIÓN
         // =====================================
@@ -151,7 +222,7 @@
             if (user) {
                 pantallaLogin.classList.add('oculto');
                 pantallaAdmin.classList.remove('oculto');
-                cargarListaProductos(); 
+                descargarInventario(); 
             } else {
                 pantallaLogin.classList.remove('oculto');
                 pantallaAdmin.classList.add('oculto');
@@ -179,44 +250,111 @@
         document.getElementById('btn-cerrar-sesion').addEventListener('click', () => signOut(auth));
 
         // =====================================
-        // LÓGICA DE PRODUCTOS
+        // LÓGICA DE INVENTARIO Y PAGINACIÓN
         // =====================================
-        window.cargarListaProductos = async function() {
+        async function descargarInventario() {
             const tbody = document.getElementById('cuerpo-tabla');
             tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Cargando inventario...</td></tr>';
             
             try {
                 const querySnapshot = await getDocs(collection(db, "productos"));
-                tbody.innerHTML = '';
+                inventarioGlobal = [];
                 
-                if (querySnapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#666;">No hay productos registrados aún.</td></tr>';
-                    return;
-                }
-
                 querySnapshot.forEach((docSnap) => {
                     const p = docSnap.data();
-                    const tr = document.createElement('tr');
-                    const nombreSeguro = p.nombre.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                    const descSegura = (p.descripcion || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                    
-                    tr.innerHTML = `
-                        <td style="font-weight: 500; color: #1A4A8D;">${p.nombre}</td>
-                        <td style="font-weight: bold;">$${p.precioUSD.toFixed(2)}</td>
-                        <td>${p.categoria || 'Otros'}</td>
-                        <td>${p.condicion || 'N/A'}</td>
-                        <td>
-                            <button class="btn-accion btn-editar" onclick="window.prepararEdicion('${docSnap.id}', '${nombreSeguro}', ${p.precioUSD}, '${p.categoria || 'Otros'}', '${p.condicion}', '${p.imgUrl}', '${descSegura}')">Editar</button>
-                            <button class="btn-accion btn-eliminar" onclick="window.eliminarProducto('${docSnap.id}')">Borrar</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
+                    p.id = docSnap.id;
+                    inventarioGlobal.push(p);
                 });
+                
+                renderizarTabla();
             } catch (error) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Error al cargar los datos.</td></tr>';
             }
+        }
+
+        // Búsqueda en tiempo real
+        document.getElementById('buscador-admin').addEventListener('input', (e) => {
+            busquedaTexto = e.target.value.toLowerCase();
+            paginaActual = 1; // Volver a la página 1 al buscar
+            renderizarTabla();
+        });
+
+        window.cambiarPagina = function(nuevaPagina) {
+            paginaActual = nuevaPagina;
+            renderizarTabla();
         };
 
+        function renderizarTabla() {
+            const tbody = document.getElementById('cuerpo-tabla');
+            const paginacion = document.getElementById('paginacion');
+            tbody.innerHTML = '';
+            paginacion.innerHTML = '';
+
+            // 1. Filtrar por búsqueda
+            const filtrados = inventarioGlobal.filter(p => p.nombre.toLowerCase().includes(busquedaTexto));
+
+            if (filtrados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#666;">No hay productos registrados o encontrados.</td></tr>';
+                return;
+            }
+
+            // 2. Calcular Paginación
+            const totalPaginas = Math.ceil(filtrados.length / ITEMS_POR_PAGINA);
+            const inicio = (paginaActual - 1) * ITEMS_POR_PAGINA;
+            const fin = inicio + ITEMS_POR_PAGINA;
+            const paginaProductos = filtrados.slice(inicio, fin);
+
+            // 3. Renderizar filas de la página actual
+            paginaProductos.forEach(p => {
+                const tr = document.createElement('tr');
+                const nombreSeguro = p.nombre.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const descSegura = (p.descripcion || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                
+                tr.innerHTML = `
+                    <td style="font-weight: 500; color: #1A4A8D;">${p.nombre}</td>
+                    <td style="font-weight: bold;">$${p.precioUSD.toFixed(2)}</td>
+                    <td>${p.categoria || 'Otros'}</td>
+                    <td>${p.condicion || 'N/A'}</td>
+                    <td class="celda-acciones">
+                        <button class="btn-accion btn-editar" onclick="window.prepararEdicion('${p.id}', '${nombreSeguro}', ${p.precioUSD}, '${p.categoria || 'Otros'}', '${p.condicion}', '${p.imgUrl}', '${descSegura}')">Editar</button>
+                        <button class="btn-accion btn-eliminar" onclick="window.eliminarProducto('${p.id}')">Borrar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // 4. Renderizar botones de paginación
+            if (totalPaginas > 1) {
+                // Botón Anterior
+                const btnAnt = document.createElement('button');
+                btnAnt.className = 'btn-page';
+                btnAnt.innerText = '«';
+                btnAnt.disabled = paginaActual === 1;
+                btnAnt.onclick = () => cambiarPagina(paginaActual - 1);
+                paginacion.appendChild(btnAnt);
+
+                // Números
+                for (let i = 1; i <= totalPaginas; i++) {
+                    const btnNum = document.createElement('button');
+                    btnNum.className = `btn-page ${i === paginaActual ? 'activo' : ''}`;
+                    btnNum.innerText = i;
+                    btnNum.onclick = () => cambiarPagina(i);
+                    paginacion.appendChild(btnNum);
+                }
+
+                // Botón Siguiente
+                const btnSig = document.createElement('button');
+                btnSig.className = 'btn-page';
+                btnSig.innerText = '»';
+                btnSig.disabled = paginaActual === totalPaginas;
+                btnSig.onclick = () => cambiarPagina(paginaActual + 1);
+                paginacion.appendChild(btnSig);
+            }
+        }
+
+        // =====================================
+        // CRUD (GUARDAR, EDITAR, ELIMINAR)
+        // =====================================
         document.getElementById('form-producto').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-guardar');
@@ -245,7 +383,6 @@
                 }
                 
                 mensaje.style.color = "green";
-                cargarListaProductos(); 
                 setTimeout(() => mensaje.innerText = "", 3000);
 
             } catch (error) {
@@ -270,6 +407,9 @@
             btnGuardar.innerText = "Actualizar Producto";
             btnGuardar.style.backgroundColor = "#f59e0b"; 
             document.getElementById('btn-cancelar').classList.remove('oculto');
+            
+            // Cambiar automáticamente a la pestaña del formulario
+            cambiarVista('form');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
@@ -287,7 +427,8 @@
             if (confirm("¿Estás seguro de que deseas eliminar este producto definitivamente?")) {
                 try {
                     await deleteDoc(doc(db, "productos", id));
-                    cargarListaProductos();
+                    // Volver a descargar para actualizar la paginación globalmente
+                    descargarInventario();
                 } catch (error) {
                     alert("Ocurrió un error al intentar borrar el producto.");
                 }
