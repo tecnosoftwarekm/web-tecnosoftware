@@ -10,7 +10,8 @@
         h2 { color: #1A4A8D; text-align: center; margin-bottom: 20px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], input[type="number"], input[type="email"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        /* Se agregó 'select' a esta línea para que herede el mismo diseño de los inputs */
+        input[type="text"], input[type="number"], input[type="email"], input[type="password"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
         button { background-color: #2D7DEB; color: white; border: none; padding: 12px; width: 100%; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px;}
         button:hover { background-color: #1A4A8D; }
         .btn-rojo { background-color: #dc3545; margin-top: 30px; }
@@ -38,7 +39,7 @@
         </form>
     </div>
 
-    <!-- PANTALLA DEL FORMULARIO DE PRODUCTOS (Oculta por defecto) -->
+    <!-- PANTALLA DEL FORMULARIO DE PRODUCTOS -->
     <div class="admin-container oculto" id="pantalla-admin">
         <h2>Subir Nuevo Producto</h2>
         <form id="form-producto">
@@ -50,6 +51,17 @@
                 <label>Precio (USD)</label>
                 <input type="number" id="precio" step="0.01" placeholder="Ej. 150" required>
             </div>
+            
+            <!-- NUEVO CAMPO DE CONDICIÓN -->
+            <div class="form-group">
+                <label>Condición del Equipo</label>
+                <select id="condicion" required>
+                    <option value="Nuevo">Nuevo</option>
+                    <option value="Usado">Usado</option>
+                    <option value="Refurbished">Refurbished</option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label>Enlace de la Imagen (URL)</label>
                 <input type="text" id="imagenUrl" placeholder="https://tudominio.com/foto.jpg" required>
@@ -135,12 +147,14 @@
 
             const nombre = document.getElementById('nombre').value;
             const precio = parseFloat(document.getElementById('precio').value);
+            const condicion = document.getElementById('condicion').value; // <-- CAPTURA DE CONDICIÓN
             const imagenUrl = document.getElementById('imagenUrl').value;
 
             try {
                 await addDoc(collection(db, "productos"), {
                     nombre: nombre,
                     precioUSD: precio,
+                    condicion: condicion, // <-- SE GUARDA EN FIREBASE
                     imgUrl: imagenUrl
                 });
 
