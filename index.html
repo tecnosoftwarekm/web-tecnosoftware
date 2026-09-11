@@ -6,6 +6,9 @@
     <title>TecnoSoftware Solutions</title>
     <!-- Favicon de la pestaña del navegador -->
     <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Iconos de Bootstrap (Para el logo de Instagram) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <style>
         /* Variables y Estilos Base */
         :root {
@@ -137,7 +140,7 @@
 
         .btn-cloud { display: inline-block; margin-top: 15px; color: var(--azul-primario); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
 
-        /* --- NUEVA SECCIÓN: NUESTRO PROCESO (Estilo Oleica) --- */
+        /* --- SECCIÓN NUESTRO PROCESO --- */
         #proceso { background-color: var(--blanco); max-width: 100%; padding: 80px 20px; }
         .proceso-container { max-width: 1200px; margin: 0 auto; }
         .proceso-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
@@ -146,7 +149,14 @@
         .proceso-step h4 { color: var(--azul-oscuro); margin: 15px 0 10px 0; font-size: 1.1rem; }
         .proceso-step p { color: var(--texto-claro); font-size: 0.9rem; text-align: center; }
 
+        /* --- NUEVA SECCIÓN INSTAGRAM --- */
+        #instagram { background-color: var(--fondo-claro); max-width: 100%; padding: 80px 20px; text-align: center; }
+        .instagram-container { max-width: 800px; margin: 0 auto; }
+        .instagram-box { background-color: var(--blanco); border: 2px dashed #ccc; border-radius: 12px; padding: 50px 20px; margin-top: 30px; }
+        .instagram-box i { font-size: 3rem; color: #ccc; margin-bottom: 15px; display: block; }
+
         /* --- SECCIÓN CONTACTO --- */
+        #contacto { padding-top: 80px; }
         .contacto-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px; align-items: start; }
         .contacto-info h3 { color: var(--azul-oscuro); margin-bottom: 20px; font-size: 1.5rem; }
         .contacto-info p { margin-bottom: 15px; font-size: 1.05rem; text-align: justify; }
@@ -195,6 +205,7 @@
                 <li><a href="#proceso">Proceso</a></li>
                 <!-- ENLACE AL CARRITO CON RESALTE VISUAL -->
                 <li><a href="productos.html" style="color: var(--azul-primario); font-weight: 800;">🛒 Tienda</a></li>
+                <li><a href="#instagram">Novedades</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
         </nav>
@@ -325,6 +336,19 @@
         </div>
     </section>
 
+    <!-- NUEVA SECCIÓN: INSTAGRAM FEED -->
+    <section id="instagram">
+        <div class="instagram-container">
+            <h2 class="section-title"><i class="bi bi-instagram" style="color: #E1306C; margin-right: 10px; font-size: 2rem; vertical-align: middle;"></i>Nuestro Instagram</h2>
+            <p style="color: var(--texto-claro);">Mantente al día con las últimas novedades tecnológicas e instalaciones.</p>
+            
+            <div class="instagram-box">
+                <i class="bi bi-code-slash"></i>
+                <p>Feed Automático de Instagram</p>
+            </div>
+        </div>
+    </section>
+
     <section id="contacto">
         <h2 class="section-title">Contacto</h2>
         <div class="contacto-container">
@@ -336,7 +360,6 @@
                 <p><strong>Ubicación Corporativa:</strong><br>Naguanagua, Estado Carabobo, Venezuela.</p>
             </div>
             
-            <!-- FORMULARIO ACTUALIZADO CON FORMSPREE DE TECNOSOFTWARE -->
             <form id="form-contacto" class="contacto-form">
                 <div class="form-group">
                     <label for="nombre">Nombre o Razón Social</label>
@@ -354,7 +377,6 @@
                     <label for="mensaje">Mensaje / Requerimiento</label>
                     <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos brevemente qué tipo de solución o soporte necesitas..." required></textarea>
                 </div>
-                <!-- Botón tipo button para el script -->
                 <button type="button" id="btn-enviar-formspree" class="btn-enviar">Enviar Mensaje</button>
             </form>
         </div>
@@ -401,8 +423,7 @@
                     // Regresa el botón a la normalidad después de 4 segundos
                     setTimeout(() => {
                         boton.innerText = textoOriginal;
-                        // Borramos el color en línea para que tome el original del CSS
-                        boton.style.backgroundColor = ""; 
+                        boton.style.backgroundColor = ""; // Regresa al color original CSS
                         boton.disabled = false;
                     }, 4000);
                 } else {
