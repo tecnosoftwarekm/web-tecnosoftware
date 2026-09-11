@@ -151,9 +151,7 @@
 
         /* --- NUEVA SECCIÓN INSTAGRAM --- */
         #instagram { background-color: var(--fondo-claro); max-width: 100%; padding: 80px 20px; text-align: center; }
-        .instagram-container { max-width: 800px; margin: 0 auto; }
-        .instagram-box { background-color: var(--blanco); border: 2px dashed #ccc; border-radius: 12px; padding: 50px 20px; margin-top: 30px; }
-        .instagram-box i { font-size: 3rem; color: #ccc; margin-bottom: 15px; display: block; }
+        .instagram-container { max-width: 1000px; margin: 0 auto; } /* Más ancho para que quepan las fotos */
 
         /* --- SECCIÓN CONTACTO --- */
         #contacto { padding-top: 80px; }
@@ -336,16 +334,16 @@
         </div>
     </section>
 
-    <!-- NUEVA SECCIÓN: INSTAGRAM FEED -->
+    <!-- NUEVA SECCIÓN: INSTAGRAM FEED CON ELFSIGHT -->
     <section id="instagram">
         <div class="instagram-container">
             <h2 class="section-title"><i class="bi bi-instagram" style="color: #E1306C; margin-right: 10px; font-size: 2rem; vertical-align: middle;"></i>Nuestro Instagram</h2>
-            <p style="color: var(--texto-claro);">Mantente al día con las últimas novedades tecnológicas e instalaciones.</p>
+            <p style="color: var(--texto-claro); text-align: center; margin-bottom: 40px;">Mantente al día con las últimas novedades tecnológicas e instalaciones.</p>
             
-            <div class="instagram-box">
-                <i class="bi bi-code-slash"></i>
-                <p>Feed Automático de Instagram</p>
-            </div>
+            <!-- Elfsight Instagram Feed | Untitled Instagram Feed -->
+            <script src="https://elfsightcdn.com/platform.js" async></script>
+            <div class="elfsight-app-eb97b7df-60ec-450f-aacd-3ee1109627fc" data-elfsight-app-lazy></div>
+            
         </div>
     </section>
 
@@ -377,6 +375,7 @@
                     <label for="mensaje">Mensaje / Requerimiento</label>
                     <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos brevemente qué tipo de solución o soporte necesitas..." required></textarea>
                 </div>
+                <!-- Botón tipo button para el script -->
                 <button type="button" id="btn-enviar-formspree" class="btn-enviar">Enviar Mensaje</button>
             </form>
         </div>
@@ -386,27 +385,24 @@
         <p>&copy; 2026 TecnoSoftware Solutions KM, C.A. Cloud - Soluciones IT. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- SCRIPT PARA ENVIAR FORMSPREE SIN SALIR DE LA PÁGINA (MÉTODO INFALIBLE) -->
+    <!-- SCRIPT PARA ENVIAR FORMSPREE SIN SALIR DE LA PÁGINA -->
     <script>
         document.getElementById("btn-enviar-formspree").addEventListener("click", async function() {
             const form = document.getElementById("form-contacto");
             
-            // 1. Validar que las casillas no estén vacías
             if (!form.checkValidity()) {
                 form.reportValidity();
-                return; // Si falta algo, se detiene y avisa al usuario
+                return; 
             }
 
             const data = new FormData(form);
             const boton = document.getElementById("btn-enviar-formspree");
             const textoOriginal = boton.innerText;
             
-            // 2. Cambiamos el texto del botón mientras se envía
             boton.innerText = "Enviando mensaje...";
             boton.disabled = true;
 
             try {
-                // 3. Enviamos los datos directamente al enlace Formspree de TecnoSoftware
                 const response = await fetch("https://formspree.io/f/mgaednkl", {
                     method: "POST",
                     body: data,
@@ -416,19 +412,18 @@
                 });
 
                 if (response.ok) {
-                    form.reset(); // Limpia las casillas
+                    form.reset(); 
                     boton.innerText = "¡Mensaje Enviado con Éxito!";
-                    boton.style.backgroundColor = "#28a745"; // Verde de éxito
+                    boton.style.backgroundColor = "#28a745"; 
                     
-                    // Regresa el botón a la normalidad después de 4 segundos
                     setTimeout(() => {
                         boton.innerText = textoOriginal;
-                        boton.style.backgroundColor = ""; // Regresa al color original CSS
+                        boton.style.backgroundColor = ""; 
                         boton.disabled = false;
                     }, 4000);
                 } else {
                     boton.innerText = "Hubo un error al enviar";
-                    boton.style.backgroundColor = "#dc3545"; // Rojo de error
+                    boton.style.backgroundColor = "#dc3545"; 
                     setTimeout(() => {
                         boton.innerText = textoOriginal;
                         boton.style.backgroundColor = "";
@@ -437,7 +432,7 @@
                 }
             } catch (error) {
                 boton.innerText = "Error de conexión";
-                boton.style.backgroundColor = "#dc3545"; // Rojo de error
+                boton.style.backgroundColor = "#dc3545"; 
                 setTimeout(() => {
                     boton.innerText = textoOriginal;
                     boton.style.backgroundColor = "";
